@@ -1,3 +1,4 @@
+// Change the mapUrl below to test!
 
 var res = [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5];
 
@@ -10,23 +11,21 @@ var setupMap = function(mapId) {
     }
     ,maxBounds: bounds
   })
-  ,lmvUrl = 'http://kar-render1:9090/lmv-default-idevio/{z}/{x}/{y}.png'
-  ,lmvAttrib = 'Map data &copy; 2011 Lantmäteriet, Imagery &copy; 2011 Kartena'
-  ,tilelayer = new L.TileLayer(lmvUrl, {
+  ,mapUrl = 'http://your-map.data/{z}/{x}/{y}.png'
+  ,attrib = 'Demo of RT90 projections using proj4js with Leaflet'
+  ,tilelayer = new L.TileLayer(mapUrl, {
     scheme: 'xyz'
     ,maxZoom: 14
     ,minZoom: 0
     ,noWrap: true
     ,continuousWorld: true
-    ,attribution: lmvAttrib
+    ,attribution: attrib
   });
   map.addLayer(tilelayer);
   
   return map;
 };
 
-//$(function () {
-  var map = window.map = setupMap('map');
-  var start = new L.LatLng(57.704503026010514, 11.965263344824994);
-  map.setView(start, 13);
-//});
+var map = window.map = setupMap('map');
+var start = new L.LatLng(57.704503026010514, 11.965263344824994);
+map.setView(start, 13);
