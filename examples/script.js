@@ -25,8 +25,8 @@ var setupMap = function(mapId) {
   return map;
 };
 
-$(function () {
+//$(function () {
   var map = window.map = setupMap('map');
   var start = new L.LatLng(57.704503026010514, 11.965263344824994);
   map.setView(start, 13);
-});
+//});
