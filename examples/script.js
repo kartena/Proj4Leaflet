@@ -10,7 +10,7 @@ var res = [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5]
   }
   ,maxBounds: bounds
 })
-// Change the mapUrl below to test!
+
 ,mapUrl = 'http://api.geosition.com/tilestache/gp/{z}/{x}/{y}.png'
 ,attrib = 'Map data &copy; 2011 Lantmäteriet, Imagery &copy; 2011 Kartena'
 ,tilelayer = new L.TileLayer(mapUrl, {
