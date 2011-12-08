@@ -6,15 +6,13 @@ L.CRS.proj4js = (function () {
 		var proj = new Proj4js.Proj(code);
 		return {
 			project: function (latlng) {
-				var projPoint = new Proj4js.Point(latlng.lng, latlng.lat);
-				Proj4js.transform(Proj4js.WGS84, proj, projPoint);
-				return new L.Point(projPoint.x, projPoint.y);
+				var point = new L.Point(latlng.lng, latlng.lat);
+				return Proj4js.transform(Proj4js.WGS84, proj, point);
 			},
 
 			unproject: function (point, unbounded) {
-				var projPoint = new Proj4js.Point(point.x, point.y);
-				Proj4js.transform(proj, Proj4js.WGS84, projPoint);
-				return new L.LatLng(projPoint.y, projPoint.x, unbounded);
+				Proj4js.transform(proj, Proj4js.WGS84, point);
+				return new L.LatLng(point.y, point.x, unbounded);
 			}
 		};
 	};
