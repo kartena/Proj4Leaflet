@@ -1,4 +1,3 @@
-/*global L,Proj4js*/
 L.CRS.proj4js = (function () {
 	var createProjection = function (code, def) {
 		if (typeof(def) !== 'undefined') {
@@ -7,15 +6,15 @@ L.CRS.proj4js = (function () {
 		var proj = new Proj4js.Proj(code);
 		return {
 			project: function (latlng) {
-				var latlng_ = new Proj4js.Point(latlng.lng, latlng.lat);
-				Proj4js.transform(Proj4js.WGS84, proj, latlng_);
-				return new L.Point(latlng_.x, latlng_.y);
+				var projPoint = new Proj4js.Point(latlng.lng, latlng.lat);
+				Proj4js.transform(Proj4js.WGS84, proj, projPoint);
+				return new L.Point(projPoint.x, projPoint.y);
 			},
 
 			unproject: function (point, unbounded) {
-				var point_ = new Proj4js.Point(point.x, point.y);
-				Proj4js.transform(proj, Proj4js.WGS84, point_);
-				return new L.LatLng(point_.y, point_.x, unbounded);
+				var projPoint = new Proj4js.Point(point.x, point.y);
+				Proj4js.transform(proj, Proj4js.WGS84, projPoint);
+				return new L.LatLng(projPoint.y, projPoint.x, unbounded);
 			}
 		};
 	};
