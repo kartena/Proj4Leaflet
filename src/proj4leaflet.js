@@ -11,8 +11,8 @@ L.CRS.proj4js = (function () {
 			},
 
 			unproject: function (point, unbounded) {
-				Proj4js.transform(proj, Proj4js.WGS84, point);
-				return new L.LatLng(point.y, point.x, unbounded);
+				var point2 = Proj4js.transform(proj, Proj4js.WGS84, point.clone());
+				return new L.LatLng(point2.y, point2.x, unbounded);
 			}
 		};
 	};
