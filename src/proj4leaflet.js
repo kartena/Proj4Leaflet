@@ -1,9 +1,10 @@
 L.CRS.proj4js = (function () {
-	var createProjection = function (code, def) {
+	var createProjection = function (code, def, /*L.Transformation*/ transformation) {
 		if (typeof(def) !== 'undefined') {
 			Proj4js.defs[code] = def;
 		}
 		var proj = new Proj4js.Proj(code);
+    
 		return {
 			project: function (latlng) {
 				var point = new L.Point(latlng.lng, latlng.lat);
@@ -17,13 +18,11 @@ L.CRS.proj4js = (function () {
 		};
 	};
 
-	var transformation = new L.Transformation(1, 0, -1, 0);
-
-	return function (code, def) {
+	return function (code, def, transformation) {
 		return L.Util.extend({}, L.CRS, {
-			code: code,
-			transformation: transformation,
-			projection: createProjection(code, def)
+      code: code,
+      transformation: transformation ? transformation: new L.Transformation(1, 0, -1, 0),
+      projection: createProjection(code, def)
 		});
 	};
 }());
