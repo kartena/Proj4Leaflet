@@ -19,9 +19,9 @@ L.CRS.proj4js('EPSG:25833',
   new L.Transformation(1, 2500000, -1, 9045984));
 
 // SWEREF 99 TM
-    crs: L.CRS.proj4js('EPSG:3006', 
-    "+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs",
-    new L.Transformation(1, -218128.7031, -1, 6126002.9379));
+L.CRS.proj4js('EPSG:3006', 
+  '+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
+  new L.Transformation(1, -218128.7031, -1, 6126002.9379));
 ```
 
 More details in [examples/script.js](https://github.com/kartena/Proj4Leaflet/blob/master/examples/script.js)
@@ -30,14 +30,18 @@ More details in [examples/script.js](https://github.com/kartena/Proj4Leaflet/blo
 Transformation turns projected coordinates into pixel coordinates corresponding to a given zoom. 
 
 It uses the following formula (simplified slightly, it also takes zoom into account): 
-    ```
-    point.x = scale * (this._a * point.x + this._b);                            
-    point.y = scale * (this._c * point.y + this._d);     
-    ```
+
+```javascript
+point.x = scale * (this._a * point.x + this._b);                            
+point.y = scale * (this._c * point.y + this._d);     
+```
 
 Which we usually define as  
+
+```
 a = 1 
 b = -(x_origin)
 c = -1
 d = y_origin
+```
 
