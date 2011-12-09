@@ -20,9 +20,9 @@ L.CRS.proj4js = (function () {
 
 	return function (code, def, transformation) {
 		return L.Util.extend({}, L.CRS, {
-      code: code,
-      transformation: transformation ? transformation: new L.Transformation(1, 0, -1, 0),
-      projection: createProjection(code, def)
+			code: code,
+			transformation: transformation ? transformation: new L.Transformation(1, 0, -1, 0),
+			projection: createProjection(code, def)
 		});
 	};
 }());
