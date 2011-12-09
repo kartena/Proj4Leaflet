@@ -1,6 +1,6 @@
 # Proj4Leaflet
 
-This is an early attempt at integrating Proj4js with the excellent map client Leaflet (http://leaflet.cloudmade.com). We decided to put this into a separate library for now to avoud adding unnecessary dependencies to Leaflet.
+This is an early attempt at integrating [Proj4js](http://proj4js.org/) with the excellent map client [Leaflet](http://leaflet.cloudmade.com). We decided to put this into a separate library for now to avoud adding unnecessary dependencies to Leaflet.
 
 ## Example
 
@@ -11,5 +11,6 @@ L.CRS.proj4js('EPSG:2400',
   '+towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +no_defs');
 ```
 Defines the EPSG:2400 (RT90) projection in Proj4 format and returns a Leaflet CRS object which can be used as the "crs" option to L.Map.
+
 
 More details in [examples/script.js](https://github.com/kartena/Proj4Leaflet/blob/master/examples/script.js)
