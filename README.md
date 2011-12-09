@@ -4,6 +4,7 @@ This is an early attempt at integrating [Proj4js](http://proj4js.org/) with the 
 
 ## Example
 Defines the EPSG:2400 (RT90) projection in Proj4 format and returns a Leaflet CRS object which can be used as the "crs" option to L.Map.
+
 ```javascript
 // RT90
 L.CRS.proj4js('EPSG:2400',
