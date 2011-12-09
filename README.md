@@ -29,14 +29,14 @@ More details in [examples/script.js](https://github.com/kartena/Proj4Leaflet/blo
 ## Transformations
 Transformation turns projected coordinates into pixel coordinates corresponding to a given zoom. 
 
-It uses the following formula (simplified slightly, it also takes zoom into account): 
+It uses the following formula: 
 
 ```javascript
 point.x = scale * (this._a * point.x + this._b);                            
 point.y = scale * (this._c * point.y + this._d);     
 ```
 
-Which we usually define as  
+which we usually define as  
 
 ```
 a = 1 
