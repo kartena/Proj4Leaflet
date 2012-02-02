@@ -1,4 +1,3 @@
-
 var res = [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5]
 ,start = new L.LatLng(57.704503026010514, 11.965263344824994)
 ,map = new L.Map('map', {
@@ -18,6 +17,7 @@ var res = [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5]
   ,minZoom: 0
   ,continuousWorld: true
   ,attribution: attrib
-});
+})
+,b = new Billing.Leaflet(map, "github-demo", "lmv", parseInt(Math.random() * 10000000), window.location.hostname, window.location.href);
 map.addLayer(tilelayer);
 map.setView(start, 13);
