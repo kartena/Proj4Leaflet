@@ -2,6 +2,8 @@
 
 This is an early attempt at integrating [Proj4js](http://proj4js.org/) with the excellent map client [Leaflet](http://leaflet.cloudmade.com). We decided to put this into a separate library for now to avoid adding unnecessary dependencies to Leaflet.
 
+For more details, see this [blog post on tiling and projections](http://blog.kartena.se/local-projections-in-a-world-of-spherical-mercator/).
+
 ## Example
 Defines the EPSG:2400 (RT90) projection in Proj4 format and returns a Leaflet CRS object which can be used as the "crs" option to L.Map.
 
