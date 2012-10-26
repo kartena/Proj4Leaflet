@@ -8,7 +8,7 @@ var res = [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5]
     ,new L.Transformation(1, 0, -1, 0))
 ,map = new L.Map('map', {
   crs: crs
-  ,scale: scale,
+  ,scale: scale
   ,continuousWorld: true
 })
 ,mapUrl = 'http://api.geosition.com/tile/lmv/{z}/{x}/{y}.png'
