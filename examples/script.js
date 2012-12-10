@@ -13,7 +13,8 @@ crs.scale = function(zoom) {
 
 var	map = new L.Map('map', {
 	crs: crs,
-	continuousWorld: true
+	continuousWorld: true,
+	worldCopyJump: false
 });
 var mapUrl = 'http://api.geosition.com/tile/lmv/{z}/{x}/{y}.png',
 	attrib = 'Map data &copy; 2011 Lantmäteriet, Imagery &copy; 2011 Kartena',
