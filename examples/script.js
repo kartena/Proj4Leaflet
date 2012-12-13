@@ -19,7 +19,7 @@ var	map = new L.Map('map', {
 var mapUrl = 'http://api.geosition.com/tile/lmv/{z}/{x}/{y}.png',
 	attrib = 'Map data &copy; 2011 Lantmäteriet, Imagery &copy; 2011 Kartena',
 	tilelayer = new L.TileLayer(mapUrl, {
-		tms: false,   // this is the default (xyz scheme). Change to true if using TMS scheme.
+		tms: false   // this is the default (xyz scheme). Change to true if using TMS scheme.
 		,maxZoom: 14
 		,minZoom: 0
 		,continuousWorld: true
