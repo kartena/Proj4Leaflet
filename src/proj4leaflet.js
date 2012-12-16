@@ -4,7 +4,7 @@ L.CRS.proj4js = (function () {
 			Proj4js.defs[code] = def;
 		}
 		var proj = new Proj4js.Proj(code);
-    
+
 		return {
 			project: function (latlng) {
 				var point = new L.Point(latlng.lng, latlng.lat);
@@ -26,3 +26,26 @@ L.CRS.proj4js = (function () {
 		});
 	};
 }());
+
+L.TileLayer.Proj4TMS = L.TileLayer.extend({
+	options: {
+		tms: true,
+		continuousWorld: true,
+	},
+
+	initialize: function(urlTemplate, options) {
+		L.TileLayer.prototype.initialize.call(this, urlTemplate, options);
+	},
+
+	getTileUrl: function(tilePoint) {
+		var projectedTileSize = (this.options.tileSize / this._map.options.crs.scale(this._map.getZoom())),
+			gridHeight = Math.round((this.options.projectedBounds[3] - this.options.projectedBounds[1]) / projectedTileSize);
+
+		// TODO: relies on some of TileLayer's internals
+		return L.Util.template(this._url, L.Util.extend({
+			s: this._getSubdomain(tilePoint),
+			z: this._getZoomForUrl(),
+			x: tilePoint.x,
+			y: gridHeight - tilePoint.y - 1
+		}, this.options));	}
+});
