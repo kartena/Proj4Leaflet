@@ -45,7 +45,7 @@ L.CRS.Proj4js = L.Class.extend({
 L.CRS.Proj4jsTMS = L.CRS.Proj4js.extend({
 	initialize: function(code, def, projectedBounds, options) {
 		L.CRS.Proj4js.prototype.initialize(code, def,
-			new Transformation(1, -projectedBounds[0], -1, projectedBounds[3]),
+			new L.Transformation(1, -projectedBounds[0], -1, projectedBounds[3]),
 			options);
 		this.projectedBounds = projectedBounds;
 	},
@@ -64,17 +64,17 @@ L.TileLayer.Proj4TMS = L.TileLayer.extend({
 		continuousWorld: true,
 	},
 
-	initialize: function(urlTemplate, crs) {
+	initialize: function(urlTemplate, crs, options) {
 		if (!(crs instanceof L.CRS.Proj4jsTMS)) {
 			throw new Error("CRS is not L.CRS.Proj4jsTMS.");
 		}
 
 		L.TileLayer.prototype.initialize.call(this, urlTemplate, options);
-		this.projectedBounds = crs.projectedBounds;
+		this.crs = crs;
 
 		// Verify grid alignment
 		for (var i = this.options.minZoom; i < this.options.maxZoom; i++) {
-			var gridHeight = (this.projectedBounds[3] - this.projectedBounds[1]) /
+			var gridHeight = (this.crs.projectedBounds[3] - this.crs.projectedBounds[1]) /
 				this._projectedTileSize(i);
 			if (Math.abs(gridHeight - Math.round(gridHeight)) > 1e-3) {
 				throw new Error("Projected bounds does not match grid at zoom " + i);
@@ -84,7 +84,7 @@ L.TileLayer.Proj4TMS = L.TileLayer.extend({
 
 	getTileUrl: function(tilePoint) {
 		var gridHeight =
-			Math.round((this.projectedBounds[3] - this.projectedBounds[1]) /
+			Math.round((this.crs.projectedBounds[3] - this.crs.projectedBounds[1]) /
 			this._projectedTileSize(this._map.getZoom()));
 
 		// TODO: relies on some of TileLayer's internals
@@ -97,6 +97,6 @@ L.TileLayer.Proj4TMS = L.TileLayer.extend({
 	},
 
 	_projectedTileSize: function(zoom) {
-		return (this.options.tileSize / this._map.options.crs.scale(zoom));
+		return (this.options.tileSize / this.crs.scale(zoom));
 	}
 });
