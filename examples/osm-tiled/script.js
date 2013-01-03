@@ -1,15 +1,15 @@
-var crs = new L.CRS.Proj4js('EPSG:2400'
-						,'+lon_0=15.808277777799999 +lat_0=0.0 +k=1.0 '
-						+ '+x_0=1500000.0 +y_0=0.0 +proj=tmerc +ellps=bessel '
-						+ '+units=m '
-						+ '+towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +no_defs',
-						new L.Transformation(1, 0, -1, 0),
-						{
-							resolutions: [
-								8192, 4096, 2048, 1024, 512, 256, 128,
-								64, 32, 16, 8, 4, 2, 1, 0.5
-							]
-						});
+var crs = new L.CRS.Proj4js('EPSG:2400',
+	'+lon_0=15.808277777799999 +lat_0=0.0 +k=1.0 '
+	+ '+x_0=1500000.0 +y_0=0.0 +proj=tmerc +ellps=bessel '
+	+ '+units=m '
+	+ '+towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +no_defs',
+	{
+		resolutions: [
+			8192, 4096, 2048, 1024, 512, 256, 128,
+			64, 32, 16, 8, 4, 2, 1, 0.5
+		],
+		origin: [0, 0]
+	});
 
 var	map = new L.Map('map', {
 	crs: crs,
