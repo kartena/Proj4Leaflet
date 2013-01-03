@@ -21,14 +21,24 @@ L.Projection.Proj4js = L.Class.extend({
 L.CRS.Proj4js = L.Class.extend({
 	includes: L.CRS,
 
-	initialize: function(code, def,
-		/*L.Transformation*/ transformation, options) {
+	options: {
+		transformation: new L.Transformation(1, 0, -1, 0)
+	},
+
+	initialize: function(code, def, options) {
+		L.Util.setOptions(options);
+
 		this.code = code;
-		this.transformation =
-			transformation ? transformation : new Transformation(1, 0, -1, 0);
+		this.transformation = this.options.transformation;
 		this.projection = new L.Projection.Proj4js(code, def);
 
 		if (options) {
+			if (options.origin) {
+				this.transformation =
+					new L.Transformation(1, -options.origin[0],
+						-1, options.origin[1]);
+			}
+
 			if (options.scales) {
 				this.scale = function(zoom) {
 					return options.scales[zoom];
@@ -44,17 +54,18 @@ L.CRS.Proj4js = L.Class.extend({
 
 L.CRS.Proj4jsTMS = L.CRS.Proj4js.extend({
 	initialize: function(code, def, projectedBounds, options) {
-		L.CRS.Proj4js.prototype.initialize(code, def,
-			new L.Transformation(1, -projectedBounds[0], -1, projectedBounds[3]),
-			options);
+		options.origin = [projectedBounds[0], projectedBounds[3]];
+		L.CRS.Proj4js.prototype.initialize(code, def, options);
 		this.projectedBounds = projectedBounds;
 	},
 });
 
 // This is left here for backwards compatibility
 L.CRS.proj4js = (function () {
-	return function (code, def, transformation) {
-		return new L.CRS.Proj4js(code, def, transformation);
+	return function (code, def, transformation, options) {
+		if (transformation) options.transformation = transformation;
+
+		return new L.CRS.Proj4js(code, def, options);
 	};
 }());
 
