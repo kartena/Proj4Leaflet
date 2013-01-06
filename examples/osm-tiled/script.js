@@ -1,4 +1,4 @@
-var crs = new L.CRS.Proj4js('EPSG:2400',
+var crs = new Proj4Leaflet.CRS('EPSG:2400',
 	'+lon_0=15.808277777799999 +lat_0=0.0 +k=1.0 '
 	+ '+x_0=1500000.0 +y_0=0.0 +proj=tmerc +ellps=bessel '
 	+ '+units=m '
