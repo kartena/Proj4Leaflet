@@ -31,6 +31,10 @@ var	map = new L.Map('map', {
 	worldCopyJump: false
 });
 
+/*
+	This tile layer is provided by basemap.ru /
+	Nikolai Lebedev (https://github.com/nlebedev)
+*/
 var tileUrl = 'http://basemap.ru/service/tms/1.0.0/ooptrf_EPSG102012/{z}/{x}/{y}.png',
 	attrib = '&copy; 2012 OpenStreetMap contributors, USGS',
 	tilelayer = new Proj4Leaflet.TileLayerTMS(tileUrl, crs, {
