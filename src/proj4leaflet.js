@@ -1,4 +1,6 @@
-L.Projection.Proj4js = L.Class.extend({
+var Proj4Leaflet = {};
+
+Proj4Leaflet.Projection = L.Class.extend({
 	initialize: function(code, def) {
 		if (typeof(def) !== 'undefined') {
 			Proj4js.defs[code] = def;
@@ -18,7 +20,7 @@ L.Projection.Proj4js = L.Class.extend({
 	}
 });
 
-L.CRS.Proj4js = L.Class.extend({
+Proj4Leaflet.CRS = L.Class.extend({
 	includes: L.CRS,
 
 	options: {
@@ -30,7 +32,7 @@ L.CRS.Proj4js = L.Class.extend({
 
 		this.code = code;
 		this.transformation = this.options.transformation;
-		this.projection = new L.Projection.Proj4js(code, def);
+		this.projection = new Proj4Leaflet.Projection(code, def);
 
 		if (options) {
 			if (options.origin) {
@@ -52,32 +54,23 @@ L.CRS.Proj4js = L.Class.extend({
 	},
 });
 
-L.CRS.Proj4jsTMS = L.CRS.Proj4js.extend({
+Proj4Leaflet.CRS.TMS = Proj4Leaflet.CRS.extend({
 	initialize: function(code, def, projectedBounds, options) {
 		options.origin = [projectedBounds[0], projectedBounds[3]];
-		L.CRS.Proj4js.prototype.initialize(code, def, options);
+		Proj4Leaflet.CRS.prototype.initialize(code, def, options);
 		this.projectedBounds = projectedBounds;
 	},
 });
 
-// This is left here for backwards compatibility
-L.CRS.proj4js = (function () {
-	return function (code, def, transformation, options) {
-		if (transformation) options.transformation = transformation;
-
-		return new L.CRS.Proj4js(code, def, options);
-	};
-}());
-
-L.TileLayer.Proj4TMS = L.TileLayer.extend({
+Proj4Leaflet.TileLayerTMS = L.TileLayer.extend({
 	options: {
 		tms: true,
 		continuousWorld: true,
 	},
 
 	initialize: function(urlTemplate, crs, options) {
-		if (!(crs instanceof L.CRS.Proj4jsTMS)) {
-			throw new Error("CRS is not L.CRS.Proj4jsTMS.");
+		if (!(crs instanceof Proj4Leaflet.CRS.TMS)) {
+			throw new Error("CRS is not Proj4Leaflet.CRS.TMS.");
 		}
 
 		L.TileLayer.prototype.initialize.call(this, urlTemplate, options);
@@ -111,3 +104,16 @@ L.TileLayer.Proj4TMS = L.TileLayer.extend({
 		return (this.options.tileSize / this.crs.scale(zoom));
 	}
 });
+
+if (typeof module !== 'undefined') module.exports = Proj4Leaflet;
+
+if (L !== 'undefined') {
+	// This is left here for backwards compatibility
+	L.CRS.proj4js = (function () {
+		return function (code, def, transformation, options) {
+			if (transformation) options.transformation = transformation;
+
+			return new Proj4Leaflet.CRS(code, def, options);
+		};
+	}());
+}
