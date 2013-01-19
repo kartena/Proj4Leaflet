@@ -1,4 +1,4 @@
-# Proj4Leaflet
+# [Proj4Leaflet](http://kartena.github.com/Proj4Leaflet/)
 
 This is an early attempt at integrating [Proj4js](http://proj4js.org/) with the excellent map client [Leaflet](http://leaflet.cloudmade.com). We decided to put this into a separate library for now to avoid adding unnecessary dependencies to Leaflet.
 
