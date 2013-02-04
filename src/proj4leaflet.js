@@ -107,7 +107,7 @@ Proj4Leaflet.TileLayerTMS = L.TileLayer.extend({
 
 if (typeof module !== 'undefined') module.exports = Proj4Leaflet;
 
-if (L !== 'undefined') {
+if (typeof L !== 'undefined' && typeof L.CRS !== 'undefined') {
 	// This is left here for backwards compatibility
 	L.CRS.proj4js = (function () {
 		return function (code, def, transformation, options) {
