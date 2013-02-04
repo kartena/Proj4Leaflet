@@ -1,12 +1,18 @@
 L.Proj4js = {};
 
-L.Proj4js.Projection = L.Class.extend({
-	initialize: function(code, def) {
-		if (typeof(def) !== 'undefined') {
-			Proj4js.defs[code] = def;
-		}
+L.Proj4js._isProj4Proj = function(a) {
+	return typeof a['projName'] !== 'undefined';
+}
 
-		this._proj = new Proj4js.Proj(code);
+L.Proj4js.Projection = L.Class.extend({
+	initialize: function(a, def) {
+		if (L.Proj4js._isProj4Proj(a)) {
+			this._proj = a;
+		} else {
+			var code = a;
+			Proj4js.defs[code] = def;
+			this._proj = new Proj4js.Proj(code);
+		}
 	},
 
 	project: function (latlng) {
@@ -27,12 +33,25 @@ L.Proj4js.CRS = L.Class.extend({
 		transformation: new L.Transformation(1, 0, -1, 0)
 	},
 
-	initialize: function(code, def, options) {
-		L.Util.setOptions(options);
+	initialize: function(a, b, c) {
+		var code, proj, def, options;
 
+		if (L.Proj4js._isProj4Proj(a)) {
+			proj = a;
+			code = proj.srsCode;
+			options = b;
+
+			this.projection = new L.Proj4js.Projection(codeOrProj);
+		} else {
+			code = a;
+			def = b;
+			options = c;
+			this.projection = new L.Proj4js.Projection(code, def);
+		}
+
+		L.Util.setOptions(options);
 		this.code = code;
 		this.transformation = this.options.transformation;
-		this.projection = new L.Proj4js.Projection(code, def);
 
 		if (options) {
 			if (options.origin) {
@@ -55,9 +74,22 @@ L.Proj4js.CRS = L.Class.extend({
 });
 
 L.Proj4js.CRS.TMS = L.Proj4js.CRS.extend({
-	initialize: function(code, def, projectedBounds, options) {
+	/*initialize: function(code, def, projectedBounds, options) {*/
+	initialize: function(a, b, c, d) {
+		if (L.Proj4js._isProj4Proj(a)) {
+			var proj = a,
+				projectedBounds = b,
+				options = c;
+			L.Proj4js.CRS.prototype.initialize(proj, options);
+		} else {
+			var code = a,
+				def = b,
+				projectedBounds = c,
+				options = d;
+			L.Proj4js.CRS.prototype.initialize(code, def, options);
+		}
+
 		options.origin = [projectedBounds[0], projectedBounds[3]];
-		L.Proj4js.CRS.prototype.initialize(code, def, options);
 		this.projectedBounds = projectedBounds;
 	},
 });
