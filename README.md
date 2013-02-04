@@ -9,7 +9,7 @@ For more details, see this [blog post on tiling and projections](http://blog.kar
 
 ```javascript
 // RT90 with map's pixel origin at RT90 coordinate (0, 0)
-new Proj4Leaflet.CRS('EPSG:2400',
+new L.Proj4js.CRS('EPSG:2400',
   '+lon_0=15.808277777799999 +lat_0=0.0 +k=1.0 +x_0=1500000.0 ' +
   '+y_0=0.0 +proj=tmerc +ellps=bessel +units=m ' +
   '+towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +no_defs',
@@ -19,7 +19,7 @@ new Proj4Leaflet.CRS('EPSG:2400',
 );
 
 // SWEREF 99 TM with map's pixel origin at (218128.7031, 6126002.9379)
-new Proj4Leaflet.CRS('EPSG:3006',
+new L.Proj4js.CRS('EPSG:3006',
   '+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
   {
     origin: [218128.7031, 6126002.9379],
@@ -28,7 +28,7 @@ new Proj4Leaflet.CRS('EPSG:3006',
 );
 
 // EPSG:102012 served by TMS with bounds (-5401501.0, 4065283.0, 4402101.0, 39905283.0)
-new Proj4Leaflet.CRS.TMS('EPSG:102012',
+new L.Proj4js.CRS.TMS('EPSG:102012',
     '+proj=lcc +lat_1=30 +lat_2=62 +lat_0=0 +lon_0=105 +x_0=0 +y_0=0 '
     + '+ellps=WGS84 +datum=WGS84 +units=m +no_defs',
     [-5401501.0, 4065283.0, 4402101.0, 39905283.0],
@@ -47,7 +47,7 @@ new Proj4Leaflet.CRS.TMS('EPSG:102012',
 The plugin extends Leaflet with a few classes that helps integrating Proj4's projections into
 Leaflet's [ICRS](http://leafletjs.com/reference.html#icrs) interface.
 
-###Proj4Leaflet.CRS
+###L.Proj4js.CRS
 An ICRS implementation that uses a Proj4 definition for the projection. This is likely to be the only class you need to work with in Proj4Leaflet.
 
 ####Usage example
@@ -55,7 +55,7 @@ An ICRS implementation that uses a Proj4 definition for the projection. This is 
 var map = L.map('map', {
     center: [57.74, 11.94],
     zoom: 13,
-    crs: Proj4Leaflet.CRS('EPSG:2400',
+    crs: L.Proj4js.CRS('EPSG:2400',
       '+lon_0=15.808277777799999 +lat_0=0.0 +k=1.0 +x_0=1500000.0 ' +
       '+y_0=0.0 +proj=tmerc +ellps=bessel +units=m ' +
       '+towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +no_defs',
@@ -69,7 +69,7 @@ var map = L.map('map', {
 
 ####Constructor
 ```javascript
-Proj4Leaflet.CRS(code, proj4def, options)
+L.Proj4js.CRS(code, proj4def, options)
 ```
 
 * ```code``` is the projection's SRS code (only used internally by the Proj4js library).
@@ -81,15 +81,15 @@ Proj4Leaflet.CRS(code, proj4def, options)
   * ```scales```: an array of scales (pixels per projected coordinate unit) for each corresponding zoom level; default is to use Leaflet's native scales. You should use ```scales``` _or_ ```resolutions```, not both.
   * ```resolutions```: an array of resolutions (projected coordinate units per pixel) for each corresponding zoom level; default is to use Leaflet's native resolutions. You should use ```scales``` _or_ ```resolutions```, not both.
 
-###Proj4Leaflet.CRS.TMS
+###L.Proj4js.CRS.TMS
 ICRS implementation to work with a Proj4 projection that will be used together with a [TMS](http://en.wikipedia.org/wiki/Tile_Map_Service) tile server. Since TMS has its y axis in the opposite direction of Leaflet (and OpenStreetMap/Google Maps), this requires some extra work.
 
-_Note_: To work with a TMS tile server and Proj4Leaflet, you _must_ use ```Proj4Leaflet.TileLayerTMS``` instead of a standard L.TileLayer; the standard TileLayer can't handle other projections than spherical Mercator together with TMS.
+_Note_: To work with a TMS tile server and Proj4Leaflet, you _must_ use ```L.Proj4js.TileLayerTMS``` instead of a standard L.TileLayer; the standard TileLayer can't handle other projections than spherical Mercator together with TMS.
 
 ####Usage example
 ```javascript
 var map = new L.Map('map', {
-    crs: new Proj4Leaflet.CRS.TMS('EPSG:102012',
+    crs: new L.Proj4js.CRS.TMS('EPSG:102012',
         '+proj=lcc +lat_1=30 +lat_2=62 +lat_0=0 +lon_0=105 +x_0=0 +y_0=0 '
         + '+ellps=WGS84 +datum=WGS84 +units=m +no_defs',
         [-5401501.0, 4065283.0, 4402101.0, 39905283.0],
@@ -109,28 +109,28 @@ var map = new L.Map('map', {
 
 ####Constructor
 ```javascript
-Proj4Leaflet.CRS.TMS(code, proj4def, projectedBounds, options)
+L.Proj4js.CRS.TMS(code, proj4def, projectedBounds, options)
 ```
 
 * ```code``` is the projection's SRS code (only used internally by the Proj4js library).
 * ```proj4def``` is the Proj4 definition for the projection to use
 * ```projectedBounds``` the bounds of the TMS tile grid in projected coordinates. The bounds need to be properly specified and align to the grid on all provided zoom levels, or markers and/or tiles will not align properly with the corresponding WGS84 coordinate.
-* ```options``` is an options object with the same keys as ```Proj4Leaflet.CRS```.
+* ```options``` is an options object with the same keys as ```L.Proj4js.CRS```.
 
-###Proj4Leaflet.TileLayerTMS
+###L.Proj4js.TileLayerTMS
 Extends [L.TileLayer](http://leafletjs.com/reference.html#tilelayer) to support TMS when working with Proj4 projections. Note that ```L.TileLayer``` will _not_ work with other projections than
 EPSG:3857 if the option ```tms``` is enabled.
 
 ####Usage example
 ```javascript
-var crs = new Proj4Leaflet.CRS.TMS(...),
+var crs = new L.Proj4js.CRS.TMS(...),
     map = new L.Map('map', {
         crs: crs,
         continuousWorld: true,
         worldCopyJump: false
     }),
 
-map.addLayer(new Proj4Leaflet.TileLayerTMS('http://{s}.my-tms-server/{z}/{x}/{y}.png', crs, {
+map.addLayer(new L.Proj4js.TileLayerTMS('http://{s}.my-tms-server/{z}/{x}/{y}.png', crs, {
     maxZoom: 17
     ,minZoom: 0
     ,continuousWorld: true
@@ -140,9 +140,9 @@ map.addLayer(new Proj4Leaflet.TileLayerTMS('http://{s}.my-tms-server/{z}/{x}/{y}
 
 ####Constructor
 ```javascript
-Proj4Leaflet.TileLayerTMS(tileUrl, crs, options)
+L.Proj4js.TileLayerTMS(tileUrl, crs, options)
 ```
 
 * ```tileUrl``` is the URL template to use for tiles (see [L.TileLayer](http://leafletjs.com/reference.html#tilelayer))
-* ```crs``` is the Proj4Leaflet.CRS.TMS ICRS object used for this layer
+* ```crs``` is the L.Proj4js.CRS.TMS ICRS object used for this layer
 * ```options``` are the options for this layer, see [L.TileLayer](http://leafletjs.com/reference.html#tilelayer)

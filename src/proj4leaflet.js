@@ -1,6 +1,6 @@
-var Proj4Leaflet = {};
+L.Proj4js = {};
 
-Proj4Leaflet.Projection = L.Class.extend({
+L.Proj4js.Projection = L.Class.extend({
 	initialize: function(code, def) {
 		if (typeof(def) !== 'undefined') {
 			Proj4js.defs[code] = def;
@@ -20,7 +20,7 @@ Proj4Leaflet.Projection = L.Class.extend({
 	}
 });
 
-Proj4Leaflet.CRS = L.Class.extend({
+L.Proj4js.CRS = L.Class.extend({
 	includes: L.CRS,
 
 	options: {
@@ -32,7 +32,7 @@ Proj4Leaflet.CRS = L.Class.extend({
 
 		this.code = code;
 		this.transformation = this.options.transformation;
-		this.projection = new Proj4Leaflet.Projection(code, def);
+		this.projection = new L.Proj4js.Projection(code, def);
 
 		if (options) {
 			if (options.origin) {
@@ -54,23 +54,23 @@ Proj4Leaflet.CRS = L.Class.extend({
 	},
 });
 
-Proj4Leaflet.CRS.TMS = Proj4Leaflet.CRS.extend({
+L.Proj4js.CRS.TMS = L.Proj4js.CRS.extend({
 	initialize: function(code, def, projectedBounds, options) {
 		options.origin = [projectedBounds[0], projectedBounds[3]];
-		Proj4Leaflet.CRS.prototype.initialize(code, def, options);
+		L.Proj4js.CRS.prototype.initialize(code, def, options);
 		this.projectedBounds = projectedBounds;
 	},
 });
 
-Proj4Leaflet.TileLayerTMS = L.TileLayer.extend({
+L.Proj4js.TileLayerTMS = L.TileLayer.extend({
 	options: {
 		tms: true,
 		continuousWorld: true,
 	},
 
 	initialize: function(urlTemplate, crs, options) {
-		if (!(crs instanceof Proj4Leaflet.CRS.TMS)) {
-			throw new Error("CRS is not Proj4Leaflet.CRS.TMS.");
+		if (!(crs instanceof L.Proj4js.CRS.TMS)) {
+			throw new Error("CRS is not L.Proj4js.CRS.TMS.");
 		}
 
 		L.TileLayer.prototype.initialize.call(this, urlTemplate, options);
@@ -105,7 +105,7 @@ Proj4Leaflet.TileLayerTMS = L.TileLayer.extend({
 	}
 });
 
-if (typeof module !== 'undefined') module.exports = Proj4Leaflet;
+if (typeof module !== 'undefined') module.exports = L.Proj4js;
 
 if (typeof L !== 'undefined' && typeof L.CRS !== 'undefined') {
 	// This is left here for backwards compatibility
@@ -113,7 +113,7 @@ if (typeof L !== 'undefined' && typeof L.CRS !== 'undefined') {
 		return function (code, def, transformation, options) {
 			if (transformation) options.transformation = transformation;
 
-			return new Proj4Leaflet.CRS(code, def, options);
+			return new L.Proj4js.CRS(code, def, options);
 		};
 	}());
 }
