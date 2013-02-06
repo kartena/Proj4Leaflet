@@ -74,7 +74,6 @@ L.Proj4js.CRS = L.Class.extend({
 });
 
 L.Proj4js.CRS.TMS = L.Proj4js.CRS.extend({
-	/*initialize: function(code, def, projectedBounds, options) {*/
 	initialize: function(a, b, c, d) {
 		if (L.Proj4js._isProj4Proj(a)) {
 			var proj = a,
@@ -94,7 +93,9 @@ L.Proj4js.CRS.TMS = L.Proj4js.CRS.extend({
 	},
 });
 
-L.Proj4js.TileLayerTMS = L.TileLayer.extend({
+L.Proj4js.TileLayer = {};
+
+L.Proj4js.TileLayer.TMS = L.TileLayer.extend({
 	options: {
 		tms: true,
 		continuousWorld: true,

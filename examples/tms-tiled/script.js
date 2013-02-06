@@ -37,7 +37,7 @@ var	map = new L.Map('map', {
 */
 var tileUrl = 'http://basemap.ru/service/tms/1.0.0/ooptrf_EPSG102012/{z}/{x}/{y}.png',
 	attrib = '&copy; 2012 OpenStreetMap contributors, USGS',
-	tilelayer = new L.Proj4js.TileLayerTMS(tileUrl, crs, {
+	tilelayer = new L.Proj4js.TileLayer.TMS(tileUrl, crs, {
 		maxZoom: 17
 		,minZoom: 0
 		,continuousWorld: true

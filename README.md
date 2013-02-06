@@ -117,7 +117,7 @@ L.Proj4js.CRS.TMS(code, proj4def, projectedBounds, options)
 * ```projectedBounds``` the bounds of the TMS tile grid in projected coordinates. The bounds need to be properly specified and align to the grid on all provided zoom levels, or markers and/or tiles will not align properly with the corresponding WGS84 coordinate.
 * ```options``` is an options object with the same keys as ```L.Proj4js.CRS```.
 
-###L.Proj4js.TileLayerTMS
+###L.Proj4js.TileLayer.TMS
 Extends [L.TileLayer](http://leafletjs.com/reference.html#tilelayer) to support TMS when working with Proj4 projections. Note that ```L.TileLayer``` will _not_ work with other projections than
 EPSG:3857 if the option ```tms``` is enabled.
 
@@ -130,7 +130,7 @@ var crs = new L.Proj4js.CRS.TMS(...),
         worldCopyJump: false
     }),
 
-map.addLayer(new L.Proj4js.TileLayerTMS('http://{s}.my-tms-server/{z}/{x}/{y}.png', crs, {
+map.addLayer(new L.Proj4js.TileLayer.TMS('http://{s}.my-tms-server/{z}/{x}/{y}.png', crs, {
     maxZoom: 17
     ,minZoom: 0
     ,continuousWorld: true
@@ -140,7 +140,7 @@ map.addLayer(new L.Proj4js.TileLayerTMS('http://{s}.my-tms-server/{z}/{x}/{y}.pn
 
 ####Constructor
 ```javascript
-L.Proj4js.TileLayerTMS(tileUrl, crs, options)
+L.Proj4js.TileLayer.TMS(tileUrl, crs, options)
 ```
 
 * ```tileUrl``` is the URL template to use for tiles (see [L.TileLayer](http://leafletjs.com/reference.html#tilelayer))
