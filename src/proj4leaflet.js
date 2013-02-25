@@ -49,7 +49,7 @@ L.Proj4js.CRS = L.Class.extend({
 			this.projection = new L.Proj4js.Projection(code, def);
 		}
 
-		L.Util.setOptions(options);
+		L.Util.setOptions(this, options);
 		this.code = code;
 		this.transformation = this.options.transformation;
 
