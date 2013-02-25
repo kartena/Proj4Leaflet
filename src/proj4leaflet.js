@@ -39,13 +39,13 @@ L.Proj4js.CRS = L.Class.extend({
 		if (L.Proj4js._isProj4Proj(a)) {
 			proj = a;
 			code = proj.srsCode;
-			options = b;
+			options = b || {};
 
 			this.projection = new L.Proj4js.Projection(proj);
 		} else {
 			code = a;
 			def = b;
-			options = c;
+			options = c || {};
 			this.projection = new L.Proj4js.Projection(code, def);
 		}
 
