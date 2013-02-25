@@ -113,3 +113,17 @@ describe('L.Proj4js.CRS', function() {
 		expect(up.lng).toBe(ll.lat);
 	})
 });
+
+describe('legacy API', function() {
+	it('can create a CRS from L.proj4js function', function() {
+		var crs = L.CRS.proj4js(
+			'EPSG:2400',
+			'+lon_0=15.808277777799999 +lat_0=0.0 +k=1.0 +x_0=1500000.0 ' +
+			'+y_0=0.0 +proj=tmerc +ellps=bessel +units=m ' +
+			'+towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +no_defs');
+		var pp = crs.project(new L.LatLng(55.723337, 14.194313));
+		expect(pp.x).toBeCloseTo(1398776, 0)
+		expect(pp.y).toBeCloseTo(6178304, 0);
+		expect(crs.code).toBe('EPSG:2400');
+	});
+});
