@@ -114,6 +114,34 @@ describe('L.Proj4js.CRS', function() {
 	})
 });
 
+describe('L.Proj4js.CRS.TMS', function() {
+	it('can create an instance from a SRS code and proj4 def', function() {
+		var crs = new L.Proj4js.CRS.TMS(
+			'EPSG:2400',
+			'+lon_0=15.808277777799999 +lat_0=0.0 +k=1.0 +x_0=1500000.0 ' +
+			'+y_0=0.0 +proj=tmerc +ellps=bessel +units=m ' +
+			'+towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +no_defs',
+			[50,50,100,100]);
+
+		expect(crs.code).toBe('EPSG:2400');
+	});
+
+	it('transformation to be set from projected bounds', function() {
+		var crs = new L.Proj4js.CRS.TMS(
+			'EPSG:2400',
+			'+lon_0=15.808277777799999 +lat_0=0.0 +k=1.0 +x_0=1500000.0 ' +
+			'+y_0=0.0 +proj=tmerc +ellps=bessel +units=m ' +
+			'+towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +no_defs',
+			[50,50,100,100]),
+			t = crs.transformation;
+
+		expect(t._a).toBe(1);
+		expect(t._b).toBe(-50);
+		expect(t._c).toBe(-1);
+		expect(t._d).toBe(100)
+	});
+});
+
 describe('legacy API', function() {
 	it('can create a CRS from L.proj4js function', function() {
 		var crs = L.CRS.proj4js(
