@@ -79,16 +79,17 @@ L.Proj4js.CRS.TMS = L.Proj4js.CRS.extend({
 			var proj = a,
 				projectedBounds = b,
 				options = c;
+			options.origin = [projectedBounds[0], projectedBounds[3]];
 			L.Proj4js.CRS.prototype.initialize(proj, options);
 		} else {
 			var code = a,
 				def = b,
 				projectedBounds = c,
 				options = d;
+			options.origin = [projectedBounds[0], projectedBounds[3]];
 			L.Proj4js.CRS.prototype.initialize(code, def, options);
 		}
 
-		options.origin = [projectedBounds[0], projectedBounds[3]];
 		this.projectedBounds = projectedBounds;
 	},
 });
