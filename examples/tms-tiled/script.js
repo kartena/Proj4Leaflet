@@ -1,4 +1,4 @@
-var crs = new L.Proj4js.CRS.TMS('EPSG:102012',
+var crs = new L.Proj.CRS.TMS('EPSG:102012',
 	'+proj=lcc +lat_1=30 +lat_2=62 +lat_0=0 +lon_0=105 +x_0=0 +y_0=0 '
 	+ '+ellps=WGS84 +datum=WGS84 +units=m +no_defs',
 	[-5401501.0, 4065283.0, 4402101.0, 39905283.0],
@@ -37,7 +37,7 @@ var	map = new L.Map('map', {
 */
 var tileUrl = 'http://basemap.ru/service/tms/1.0.0/ooptrf_EPSG102012/{z}/{x}/{y}.png',
 	attrib = '&copy; 2012 OpenStreetMap contributors, USGS',
-	tilelayer = new L.Proj4js.TileLayer.TMS(tileUrl, crs, {
+	tilelayer = new L.Proj.TileLayer.TMS(tileUrl, crs, {
 		maxZoom: 17
 		,minZoom: 0
 		,continuousWorld: true

@@ -1,6 +1,6 @@
-describe('L.Proj4js.Projection', function() {
+describe('L.Proj.Projection', function() {
 	it('can create an instance from a SRS code and proj4 def', function() {
-		new L.Proj4js.Projection(
+		new L.Proj.Projection(
 			'EPSG:2400',
 			'+lon_0=15.808277777799999 +lat_0=0.0 +k=1.0 +x_0=1500000.0 ' +
 			'+y_0=0.0 +proj=tmerc +ellps=bessel +units=m ' +
@@ -8,9 +8,9 @@ describe('L.Proj4js.Projection', function() {
 	});
 });
 
-describe('L.Proj4js.CRS', function() {
+describe('L.Proj.CRS', function() {
 	it('can create an instance from a SRS code and proj4 def', function() {
-		var crs = new L.Proj4js.CRS(
+		var crs = new L.Proj.CRS(
 			'EPSG:2400',
 			'+lon_0=15.808277777799999 +lat_0=0.0 +k=1.0 +x_0=1500000.0 ' +
 			'+y_0=0.0 +proj=tmerc +ellps=bessel +units=m ' +
@@ -20,7 +20,7 @@ describe('L.Proj4js.CRS', function() {
 	});
 
 	it('can project a coordinate to a point in the defined SRS', function() {
-		var crs = new L.Proj4js.CRS(
+		var crs = new L.Proj.CRS(
 			'EPSG:2400',
 			'+lon_0=15.808277777799999 +lat_0=0.0 +k=1.0 +x_0=1500000.0 ' +
 			'+y_0=0.0 +proj=tmerc +ellps=bessel +units=m ' +
@@ -32,7 +32,7 @@ describe('L.Proj4js.CRS', function() {
 	});
 
 	it('has a default transformation that is [1, 0, -1, 0]', function() {
-		var crs = new L.Proj4js.CRS('EPSG:4326', '', {
+		var crs = new L.Proj.CRS('EPSG:4326', '', {
 			resolutions: [1]
 		});
 		var ll = new L.LatLng(1, 1),
@@ -46,7 +46,7 @@ describe('L.Proj4js.CRS', function() {
 	});
 
 	it('uses provided zoom level scales', function() {
-		var crs = new L.Proj4js.CRS('EPSG:4326', '', {
+		var crs = new L.Proj.CRS('EPSG:4326', '', {
 			scales: [1, 2, 3]
 		});
 		var ll = new L.LatLng(1, 1);
@@ -64,7 +64,7 @@ describe('L.Proj4js.CRS', function() {
 	});
 
 	it('uses provided zoom level resolutions', function() {
-		var crs = new L.Proj4js.CRS('EPSG:4326', '', {
+		var crs = new L.Proj.CRS('EPSG:4326', '', {
 			resolutions: [1, 0.5, 1 / 3]
 		});
 		var ll = new L.LatLng(1, 1);
@@ -82,7 +82,7 @@ describe('L.Proj4js.CRS', function() {
 	});
 
 	it('uses provided origin', function() {
-		var crs = new L.Proj4js.CRS('EPSG:4326', '', {
+		var crs = new L.Proj.CRS('EPSG:4326', '', {
 			resolutions: [1],
 			origin: [10, 10]
 		});
@@ -98,7 +98,7 @@ describe('L.Proj4js.CRS', function() {
 	});
 
 	it('accepts custom transformation', function() {
-		var crs = new L.Proj4js.CRS('EPSG:4326', '', {
+		var crs = new L.Proj.CRS('EPSG:4326', '', {
 			resolutions: [1],
 			transformation: new L.Transformation(3, 0, 1, -5)
 		});
@@ -114,9 +114,9 @@ describe('L.Proj4js.CRS', function() {
 	})
 });
 
-describe('L.Proj4js.CRS.TMS', function() {
+describe('L.Proj.CRS.TMS', function() {
 	it('can create an instance from a SRS code and proj4 def', function() {
-		var crs = new L.Proj4js.CRS.TMS(
+		var crs = new L.Proj.CRS.TMS(
 			'EPSG:2400',
 			'+lon_0=15.808277777799999 +lat_0=0.0 +k=1.0 +x_0=1500000.0 ' +
 			'+y_0=0.0 +proj=tmerc +ellps=bessel +units=m ' +
@@ -127,7 +127,7 @@ describe('L.Proj4js.CRS.TMS', function() {
 	});
 
 	it('transformation to be set from projected bounds', function() {
-		var crs = new L.Proj4js.CRS.TMS(
+		var crs = new L.Proj.CRS.TMS(
 			'EPSG:2400',
 			'+lon_0=15.808277777799999 +lat_0=0.0 +k=1.0 +x_0=1500000.0 ' +
 			'+y_0=0.0 +proj=tmerc +ellps=bessel +units=m ' +
@@ -143,7 +143,7 @@ describe('L.Proj4js.CRS.TMS', function() {
 });
 
 describe('legacy API', function() {
-	it('can create a CRS from L.proj4js function', function() {
+	it('can create a CRS from L.Proj function', function() {
 		var crs = L.CRS.proj4js(
 			'EPSG:2400',
 			'+lon_0=15.808277777799999 +lat_0=0.0 +k=1.0 +x_0=1500000.0 ' +
