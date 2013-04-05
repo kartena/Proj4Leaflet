@@ -53,21 +53,19 @@ L.Proj.CRS = L.Class.extend({
 		this.code = code;
 		this.transformation = this.options.transformation;
 
-		if (options) {
-			if (options.origin) {
-				this.transformation =
-					new L.Transformation(1, -options.origin[0],
-						-1, options.origin[1]);
-			}
+		if (this.options.origin) {
+			this.transformation =
+				new L.Transformation(1, -this.options.origin[0],
+					-1, this.options.origin[1]);
+		}
 
-			if (options.scales) {
-				this.scale = function(zoom) {
-					return options.scales[zoom];
-				}
-			} else if (options.resolutions) {
-				this.scale = function(zoom) {
-					return 1 / options.resolutions[zoom];
-				}
+		if (this.options.scales) {
+			this.scale = function(zoom) {
+				return this.options.scales[zoom];
+			}
+		} else if (this.options.resolutions) {
+			this.scale = function(zoom) {
+				return 1 / this.options.resolutions[zoom];
 			}
 		}
 	},
