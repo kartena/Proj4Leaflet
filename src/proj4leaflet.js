@@ -68,7 +68,7 @@ L.Proj.CRS = L.Class.extend({
 				return 1 / this.options.resolutions[zoom];
 			}
 		}
-	},
+	}
 });
 
 L.Proj.CRS.TMS = L.Proj.CRS.extend({
@@ -89,7 +89,7 @@ L.Proj.CRS.TMS = L.Proj.CRS.extend({
 		}
 
 		this.projectedBounds = projectedBounds;
-	},
+	}
 });
 
 L.Proj.TileLayer = {};
@@ -97,7 +97,7 @@ L.Proj.TileLayer = {};
 L.Proj.TileLayer.TMS = L.TileLayer.extend({
 	options: {
 		tms: true,
-		continuousWorld: true,
+		continuousWorld: true
 	},
 
 	initialize: function(urlTemplate, crs, options) {
