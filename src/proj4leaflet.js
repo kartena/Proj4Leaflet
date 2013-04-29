@@ -143,6 +143,7 @@ if (typeof L !== 'undefined' && typeof L.CRS !== 'undefined') {
 	// This is left here for backwards compatibility
 	L.CRS.proj4js = (function () {
 		return function (code, def, transformation, options) {
+			options = options || {};
 			if (transformation) options.transformation = transformation;
 
 			return new L.Proj.CRS(code, def, options);
