@@ -146,3 +146,28 @@ L.Proj.TileLayer.TMS(tileUrl, crs, options)
 * ```tileUrl``` is the URL template to use for tiles (see [L.TileLayer](http://leafletjs.com/reference.html#tilelayer))
 * ```crs``` is the L.Proj.CRS.TMS ICRS object used for this layer
 * ```options``` are the options for this layer, see [L.TileLayer](http://leafletjs.com/reference.html#tilelayer)
+
+###L.Proj.GeoJSON
+
+Extends [L.GeoJSON](http://leafletjs.com/reference.html#geojson) to add CRS support.  In this case the CRS
+ is derived from the `name` property of a `crs` defined directly on the GeoJSON object per [the spec](http://www.geojson.org/geojson-spec.html#named-crs).  The relevant Proj4js definition should be defined before loading the JSON object.
+
+####Usage Example
+```javascript
+Proj4js.defs["EPSG:26915"] = "+proj=utm +zone=15 +ellps=GRS80 +datum=NAD83 +units=m +no_defs";
+var geojson = {
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [481650, 4980105]
+  },
+  "crs": {
+    "type": "name",
+      "properties": {
+        "name": "urn:ogc:def:crs:EPSG::26915"
+      }
+    }
+  };
+var map = L.map('map');
+L.Proj.geoJson(geojson).addTo(map);
+```
