@@ -26,6 +26,14 @@ var	map = new L.Map('map', {
 	worldCopyJump: false
 });
 
+/*
+Wellington City Council's GIS web services are available under the following terms and conditions:
+http://wellington.govt.nz/about-wellington/maps/gis-data-terms-and-conditions
+
+Aerial Imagery: Creative Commons Attribution 3.0 New Zealand Licence, http://creativecommons.org/licenses/by/3.0/nz/
+Additional services listed at http://wellington.govt.nz/~/media/maps/gis/ogc-services-list.pdf
+*/
+
 var tileUrl = 'http://gis.wcc.govt.nz/arcgis/rest/services/Basemap/Aerial_Photo/MapServer/tile/{z}/{y}/{x}',
 	attrib = 'Wellington City Council &copy; 2012',
 	tilelayer = new L.TileLayer(tileUrl, {
