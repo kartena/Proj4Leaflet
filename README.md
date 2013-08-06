@@ -149,8 +149,12 @@ L.Proj.TileLayer.TMS(tileUrl, crs, options)
 
 ###L.Proj.GeoJSON
 
-Extends [L.GeoJSON](http://leafletjs.com/reference.html#geojson) to add CRS support.  In this case the CRS
- is derived from the `name` property of a `crs` defined directly on the GeoJSON object per [the spec](http://www.geojson.org/geojson-spec.html#named-crs).  The relevant Proj4js definition should be defined before loading the JSON object.
+Extends [L.GeoJSON](http://leafletjs.com/reference.html#geojson) to add CRS support.  Unlike the TileLayer extension, the CRS
+ is derived from the `name` property of a `crs` defined directly on the GeoJSON object per [the spec](http://www.geojson.org/geojson-spec.html#named-crs).  Linked CRSs are not supported.
+ 
+**Note:** The relevant Proj4js definition should be defined directly through `Proj4js.defs` before loading the GeoJSON object.  If it is not, Proj4js will attempt to load it asynchronously but it will not be ready in time to reproject the features.
+
+Also, note that future versions of the GeoJSON spec may not include explicit CRS support.  See https://github.com/GeoJSONWG/draft-geojson/pull/6 for more information.
 
 ####Usage Example
 ```javascript
