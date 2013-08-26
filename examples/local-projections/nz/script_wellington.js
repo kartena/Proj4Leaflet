@@ -19,9 +19,6 @@ var crs = new L.Proj.CRS('EPSG:2193',
 
 var	map = new L.Map('map', {
 	crs: crs,
-	scale: function(zoom) {
-		return 1 / res[zoom];
-	},
 	continuousWorld: true,
 	worldCopyJump: false
 });
