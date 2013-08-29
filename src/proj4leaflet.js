@@ -2,7 +2,7 @@ L.Proj = {};
 
 L.Proj._isProj4Proj = function(a) {
 	return typeof a['projName'] !== 'undefined';
-}
+};
 
 L.Proj.Projection = L.Class.extend({
 	initialize: function(a, def) {
@@ -154,7 +154,7 @@ L.Proj.GeoJSON = L.GeoJSON.extend({
 
 L.Proj.geoJson = function(geojson, options) {
 	return new L.Proj.GeoJSON(geojson, options);
-}
+};
 
 if (typeof module !== 'undefined') module.exports = L.Proj;
 
@@ -169,3 +169,4 @@ if (typeof L !== 'undefined' && typeof L.CRS !== 'undefined') {
 		};
 	}());
 }
+;
