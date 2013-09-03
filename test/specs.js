@@ -91,10 +91,10 @@ describe('L.Proj.CRS', function() {
 			pp = crs.latLngToPoint(ll, 0),
 			up = crs.pointToLatLng(pp, 0);
 
-		expect(pp.x).toBe(ll.lng - 10);
-		expect(pp.y).toBe(-ll.lat + 10);
-		expect(up.lat).toBe(ll.lng);
-		expect(up.lng).toBe(ll.lat);
+		expect(pp.x).toBeCloseTo(ll.lng - 10, 6);
+		expect(pp.y).toBeCloseTo(-ll.lat + 10, 6);
+		expect(up.lat).toBeCloseTo(ll.lng, 6);
+		expect(up.lng).toBeCloseTo(ll.lat, 6);
 	});
 
 	it('accepts custom transformation', function() {
@@ -140,6 +140,39 @@ describe('L.Proj.CRS.TMS', function() {
 		expect(t._c).toBe(-1);
 		expect(t._d).toBe(100)
 	});
+
+	it('can adjust bounds to align with tilegrid', function() {
+		var resolutions = [6386.233628906251, 3193.1168144531257, 1596.5584072265628, 798.2792036132814, 399.1396018066407, 199.56980090332036, 99.78490045166018, 49.89245022583009],
+			crs = new L.Proj.CRS.TMS('EPSG:900913',
+				'+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs',
+				[-851225.043, 6422198.546, 196550.197, 9691000.164],
+				{
+					resolutions: resolutions
+				}
+			),
+			tileLayer = new L.Proj.TileLayer.TMS('http://test/{z}/{x}/{y}.png', crs),
+			crs = tileLayer.crs,
+			t = crs.transformation,
+			upperLeft = new L.Point(-851225.043, 9691950.164),
+			lowerLeft = new L.Point(-851225.043, 6422198.546),
+			tp;
+
+		for (i = 0; i < resolutions.length; i++) {
+			// Mock a very stupid map
+			tileLayer._map = {getZoom: function() { return i; }};
+
+			tp = t.transform(upperLeft, crs.scale(i));
+			expect(tp.x).toBeCloseTo(0, 6);
+			expect(tp.y).toBeCloseTo(0, 6);
+
+			tp = t.transform(lowerLeft, crs.scale(i));
+			// Convert to a tile point
+			tp.x = Math.round(tp.x / 256);
+			// -1 since Leaflet uses tile's upper edge as reference
+			tp.y = Math.round(tp.y / 256) - 1;
+			expect(tileLayer.getTileUrl(tp)).toBe('http://test/' + i + '/0/0.png');
+		}
+	})
 });
 
 describe('legacy API', function() {

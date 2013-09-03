@@ -4,6 +4,18 @@ L.Proj._isProj4Proj = function(a) {
 	return typeof a['projName'] !== 'undefined';
 };
 
+L.Proj.ScaleDependantTransformation = function(scaleTransforms) {
+		this.scaleTransforms = scaleTransforms;
+	}
+
+L.Proj.ScaleDependantTransformation.prototype.transform = function(point, scale) {
+		return this.scaleTransforms[scale].transform(point, scale);
+};
+
+L.Proj.ScaleDependantTransformation.prototype.untransform = function(point, scale) {
+		return this.scaleTransforms[scale].untransform(point, scale);
+};
+
 L.Proj.Projection = L.Class.extend({
 	initialize: function(a, def) {
 		if (L.Proj._isProj4Proj(a)) {
@@ -102,32 +114,47 @@ L.Proj.TileLayer.TMS = L.TileLayer.extend({
 	},
 
 	initialize: function(urlTemplate, crs, options) {
+		var boundsMatchesGrid = true,
+			scaleTransforms,
+			upperY,
+			crsBounds;
+
 		if (!(crs instanceof L.Proj.CRS.TMS)) {
 			throw new Error("CRS is not L.Proj.CRS.TMS.");
 		}
 
 		L.TileLayer.prototype.initialize.call(this, urlTemplate, options);
 		this.crs = crs;
+		crsBounds = this.crs.projectedBounds;
 
 		// Verify grid alignment
-		for (var i = this.options.minZoom; i < this.options.maxZoom; i++) {
-			var gridHeight = (this.crs.projectedBounds[3] - this.crs.projectedBounds[1]) /
+		for (var i = this.options.minZoom; i < this.options.maxZoom && boundsMatchesGrid; i++) {
+			var gridHeight = (crsBounds[3] - crsBounds[1]) /
 				this._projectedTileSize(i);
-			if (Math.abs(gridHeight - Math.round(gridHeight)) > 1e-3) {
-				throw new Error("Projected bounds does not match grid at zoom " + i);
+			boundsMatchesGrid = Math.abs(gridHeight - Math.round(gridHeight)) > 1e-3;
+		}
+
+		if (!boundsMatchesGrid) {
+			scaleTransforms = {};
+			for (var i = this.options.minZoom; i < this.options.maxZoom; i++) {
+				upperY = crsBounds[1] + Math.ceil((crsBounds[3] - crsBounds[1]) /
+					this._projectedTileSize(i)) * this._projectedTileSize(i);
+				scaleTransforms[this.crs.scale(i)] = new L.Transformation(1, -crsBounds[0], -1, upperY);
 			}
+
+			this.crs = new L.Proj.CRS.TMS(this.crs.projection._proj, crsBounds, this.crs.options);
+			this.crs.transformation = new L.Proj.ScaleDependantTransformation(scaleTransforms);
 		}
 	},
 
 	getTileUrl: function(tilePoint) {
-		var gridHeight =
-			Math.round((this.crs.projectedBounds[3] - this.crs.projectedBounds[1]) /
-			this._projectedTileSize(this._map.getZoom()));
-
 		// TODO: relies on some of TileLayer's internals
+		var z = this._getZoomForUrl(),
+			gridHeight = Math.ceil((this.crs.projectedBounds[3] - this.crs.projectedBounds[1]) / this._projectedTileSize(z));
+
 		return L.Util.template(this._url, L.Util.extend({
 			s: this._getSubdomain(tilePoint),
-			z: this._getZoomForUrl(),
+			z: z,
 			x: tilePoint.x,
 			y: gridHeight - tilePoint.y - 1
 		}, this.options));
