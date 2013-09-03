@@ -91,10 +91,10 @@ describe('L.Proj.CRS', function() {
 			pp = crs.latLngToPoint(ll, 0),
 			up = crs.pointToLatLng(pp, 0);
 
-		expect(pp.x).toBe(ll.lng - 10);
-		expect(pp.y).toBe(-ll.lat + 10);
-		expect(up.lat).toBe(ll.lng);
-		expect(up.lng).toBe(ll.lat);
+		expect(pp.x).toBeCloseTo(ll.lng - 10, 6);
+		expect(pp.y).toBeCloseTo(-ll.lat + 10, 6);
+		expect(up.lat).toBeCloseTo(ll.lng, 6);
+		expect(up.lng).toBeCloseTo(ll.lat, 6);
 	});
 
 	it('accepts custom transformation', function() {
