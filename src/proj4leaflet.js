@@ -1,7 +1,8 @@
 L.Proj = {};
 
-L.Proj._isProj4Proj = function(a) {
-	return typeof a['projName'] !== 'undefined';
+L.Proj._isProj4Obj = function(a) {
+	return (typeof a['inverse'] !== 'undefined' 
+		&& typeof a['forward'] !== 'undefined');
 };
 
 L.Proj.ScaleDependantTransformation = function(scaleTransforms) {
@@ -18,24 +19,24 @@ L.Proj.ScaleDependantTransformation.prototype.untransform = function(point, scal
 
 L.Proj.Projection = L.Class.extend({
 	initialize: function(a, def) {
-		if (L.Proj._isProj4Proj(a)) {
+		if (L.Proj._isProj4Obj(a)) {
 			this._proj = a;
 		} else {
 			var code = a;
 			if (def)
-				Proj4js.defs[code] = def;
-			this._proj = new Proj4js.Proj(code);
+				proj4.defs(code, def);
+			this._proj = proj4(code);
 		}
 	},
 
 	project: function (latlng) {
-		var point = new L.Point(latlng.lng, latlng.lat);
-		return Proj4js.transform(Proj4js.WGS84, this._proj, point);
+		var point = this._proj.forward([latlng.lng, latlng.lat]);
+		return new L.Point(point[0], point[1]);
 	},
 
 	unproject: function (point, unbounded) {
-		var point2 = Proj4js.transform(this._proj, Proj4js.WGS84, point.clone());
-		return new L.LatLng(point2.y, point2.x, unbounded);
+		var point2 = this._proj.inverse([point.x, point.y]);
+		return new L.LatLng(point2[1], point2[0], unbounded);
 	}
 });
 
@@ -49,7 +50,7 @@ L.Proj.CRS = L.Class.extend({
 	initialize: function(a, b, c) {
 		var code, proj, def, options;
 
-		if (L.Proj._isProj4Proj(a)) {
+		if (L.Proj._isProj4Obj(a)) {
 			proj = a;
 			code = proj.srsCode;
 			options = b || {};
@@ -86,7 +87,7 @@ L.Proj.CRS = L.Class.extend({
 
 L.Proj.CRS.TMS = L.Proj.CRS.extend({
 	initialize: function(a, b, c, d) {
-		if (L.Proj._isProj4Proj(a)) {
+		if (L.Proj._isProj4Obj(a)) {
 			var proj = a,
 				projectedBounds = b,
 				options = c || {};
