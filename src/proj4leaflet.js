@@ -1,3 +1,21 @@
+(function (factory) {
+	var L, proj4;
+	if (typeof define === 'function' && define.amd) {
+		// AMD
+		define(['leaflet', 'proj4'], factory);
+	} else if (typeof module !== 'undefined') {
+		// Node/CommonJS
+		L = require('leaflet');
+		proj4 = require('proj4');
+		module.exports = factory(L, proj4);
+	} else {
+		// Browser globals
+		if (typeof window.L === 'undefined' || typeof window.proj4 === 'undefined')
+			throw "Leaflet and proj4 must be loaded first";
+		factory(window.L, window.proj4);
+	}
+}(function (L, proj4) {
+
 L.Proj = {};
 
 L.Proj._isProj4Obj = function(a) {
@@ -191,9 +209,7 @@ L.Proj.geoJson = function(geojson, options) {
 	return new L.Proj.GeoJSON(geojson, options);
 };
 
-if (typeof module !== 'undefined') module.exports = L.Proj;
-
-if (typeof L !== 'undefined' && typeof L.CRS !== 'undefined') {
+if (typeof L.CRS !== 'undefined') {
 	// This is left here for backwards compatibility
 	L.CRS.proj4js = (function () {
 		return function (code, def, transformation, options) {
@@ -204,4 +220,7 @@ if (typeof L !== 'undefined' && typeof L.CRS !== 'undefined') {
 		};
 	}());
 }
-;
+
+return L.Proj;
+
+}));
