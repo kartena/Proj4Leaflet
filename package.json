@@ -20,7 +20,17 @@
     "projection",
     "leaflet"
   ],
-  "author": "Per Liedman",
+  "author": "Per Liedman <per.liedman@kartena.se> (https://github.com/perliedman/)",
+  "contributors": [
+    "Mattias Bengtsson (https://github.com/moonlite/)",
+    "Christopher Fredén (https://github.com/icetan/)",
+    "Peter Thorin (https://github.com/pthorin/)",
+    "S. Andrew Sheppard (https://github.com/sheppard)",
+    "Leigh Hunt (https://github.com/leighghunt/)",
+    "Vladimir Agafonkin (https://github.com/mourner)",
+    "Mathieu Leplatre (https://github.com/leplatrem)",
+    "fnicollet (https://github.com/fnicollet)"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/kartena/Proj4Leaflet/issues"
