@@ -1,3 +1,16 @@
+requirejs.config({
+    'baseUrl': '../../lib',
+
+    /* Note: would normally put proj4leaflet in lib/ to avoid paths config */
+    'paths': {
+        /* path is relative to baseUrl */
+        'proj4leaflet': '../src/proj4leaflet'
+    }
+});
+
+require(['leaflet', 'proj4', 'proj4leaflet'],
+function(L, proj4) {
+
 var map = L.map('map').setView([44.97,-93.24], 11);
 
 // MapQuest OSM Tiles
@@ -15,7 +28,8 @@ L.tileLayer(
 ).addTo(map);
 
 // GeoJSON layer (UTM15)
-Proj4js.defs["EPSG:26915"] = "+proj=utm +zone=15 +ellps=GRS80 +datum=NAD83 +units=m +no_defs";
+proj4.defs("EPSG:26915", "+proj=utm +zone=15 +ellps=GRS80 +datum=NAD83 +units=m +no_defs");
+
 var geojson = {
   "type": "Feature",
   "geometry": {
@@ -38,3 +52,5 @@ L.Proj.geoJson(geojson, {
     return L.marker(latlng).bindPopup(feature.properties.name);
   }
 }).addTo(map);
+
+});
