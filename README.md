@@ -43,6 +43,11 @@ new L.Proj.CRS.TMS('EPSG:102012',
 );
 ```
 
+## Proj4js compatibility notice
+Proj4js has breaking changes introduced after version 1.1. The current version of Proj4Leaflet
+uses Proj4js 1.3.4 or later. If you for some reason need Proj4js version 1.1 compatibility, you can
+still use Proj4Leaflet [version 0.5](https://github.com/kartena/Proj4Leaflet/tree/0.5).
+
 ## Reference
 The plugin extends Leaflet with a few classes that helps integrating Proj4's projections into
 Leaflet's [ICRS](http://leafletjs.com/reference.html#icrs) interface.
@@ -151,7 +156,7 @@ L.Proj.TileLayer.TMS(tileUrl, crs, options)
 
 Extends [L.GeoJSON](http://leafletjs.com/reference.html#geojson) to add CRS support.  Unlike the TileLayer extension, the CRS
  is derived from the `name` property of a `crs` defined directly on the GeoJSON object per [the spec](http://www.geojson.org/geojson-spec.html#named-crs).  Linked CRSs are not supported.
- 
+
 **Note:** The relevant Proj4 definition should be defined directly via `proj4.defs` before loading the GeoJSON object.  If it is not, proj4leaflet will throw an error.
 
 Also, note that future versions of the GeoJSON spec may not include explicit CRS support.  See https://github.com/GeoJSONWG/draft-geojson/pull/6 for more information.
