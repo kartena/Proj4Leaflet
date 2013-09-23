@@ -6,7 +6,7 @@
 	} else if (typeof module !== 'undefined') {
 		// Node/CommonJS
 		L = require('leaflet');
-		proj4 = require('proj4js');
+		proj4 = require('proj4');
 		module.exports = factory(L, proj4);
 	} else {
 		// Browser globals
