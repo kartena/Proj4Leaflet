@@ -1,4 +1,5 @@
-# [Proj4Leaflet](http://kartena.github.com/Proj4Leaflet/)
+Proj4Leaflet
+============
 
 This [Leaflet](http://leafletjs.com) plugin adds support for using projections supported by
 [Proj4js](http://proj4js.org/).
