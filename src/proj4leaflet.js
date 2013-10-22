@@ -117,14 +117,14 @@ L.Proj.CRS.TMS = L.Proj.CRS.extend({
 				projectedBounds = b,
 				options = c || {};
 			options.origin = [projectedBounds[0], projectedBounds[3]];
-			L.Proj.CRS.prototype.initialize(proj, options);
+			L.Proj.CRS.prototype.initialize.call(this, proj, options);
 		} else {
 			var code = a,
 				def = b,
 				projectedBounds = c,
 				options = d || {};
 			options.origin = [projectedBounds[0], projectedBounds[3]];
-			L.Proj.CRS.prototype.initialize(code, def, options);
+			L.Proj.CRS.prototype.initialize.call(this, code, def, options);
 		}
 
 		this.projectedBounds = projectedBounds;
