@@ -173,14 +173,15 @@ L.Proj.TileLayer.TMS = L.TileLayer.extend({
 		}
 	},
 
-	getTileUrl: function(tilePoint) {
-		// TODO: relies on some of TileLayer's internals
-		var z = this._getZoomForUrl(),
-			gridHeight = Math.ceil((this.crs.projectedBounds[3] - this.crs.projectedBounds[1]) / this._projectedTileSize(z));
+	getTileUrl: function(tilePoint, zoom) {
+		var gridHeight = Math.ceil(
+      (this.crs.projectedBounds[3] - this.crs.projectedBounds[1]) /
+      this._projectedTileSize(zoom)
+    );
 
 		return L.Util.template(this._url, L.Util.extend({
 			s: this._getSubdomain(tilePoint),
-			z: z,
+			z: zoom,
 			x: tilePoint.x,
 			y: gridHeight - tilePoint.y - 1
 		}, this.options));
