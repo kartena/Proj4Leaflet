@@ -1,4 +1,4 @@
-Proj4Leaflet
+Proj4Leaflet [![NPM version](https://badge.fury.io/js/proj4leaflet.png)](http://badge.fury.io/js/proj4leaflet)
 ============
 
 This [Leaflet](http://leafletjs.com) plugin adds support for using projections supported by
