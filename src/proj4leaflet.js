@@ -183,13 +183,19 @@
 		},
 
 		getTileUrl: function(tilePoint, zoom) {
-			var gridHeight = Math.ceil(
+			var gridHeight;
+
+			if (zoom === undefined) {
+				zoom = this._map.getZoom();
+			}
+
+			gridHeight = Math.ceil(
 				(this.crs.projectedBounds[3] - this.crs.projectedBounds[1]) /
 				this._projectedTileSize(zoom));
 
 			return L.Util.template(this._url, L.Util.extend({
 				s: this._getSubdomain(tilePoint),
-				z: zoom,
+				z: this._getZoomForUrl(),
 				x: tilePoint.x,
 				y: gridHeight - tilePoint.y - 1
 			}, this.options));
