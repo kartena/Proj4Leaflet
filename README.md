@@ -1,7 +1,8 @@
-# [Proj4Leaflet](http://kartena.github.com/Proj4Leaflet/)
+Proj4Leaflet [![NPM version](https://badge.fury.io/js/proj4leaflet.png)](http://badge.fury.io/js/proj4leaflet)
+============
 
 This [Leaflet](http://leafletjs.com) plugin adds support for using projections supported by
-[Proj4js](http://proj4js.org/).
+[Proj4js](https://github.com/proj4js/proj4js).
 
 For more details, see this [blog post on tiling and projections](http://blog.kartena.se/local-projections-in-a-world-of-spherical-mercator/).
 
