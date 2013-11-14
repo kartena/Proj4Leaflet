@@ -45,8 +45,8 @@ new L.Proj.CRS.TMS('EPSG:102012',
 ```
 
 ## Proj4js compatibility notice
-Proj4js has breaking changes introduced after version 1.1. The current version of Proj4Leaflet
-uses Proj4js 1.3.4 or later. If you for some reason need Proj4js version 1.1 compatibility, you can
+Proj4js has breaking changes introduced after version 1.1.0. The current version of Proj4Leaflet
+uses Proj4js 1.3.4 or later. If you for some reason need Proj4js version 1.1.0 compatibility, you can
 still use Proj4Leaflet [version 0.5](https://github.com/kartena/Proj4Leaflet/tree/0.5).
 
 ## Reference
