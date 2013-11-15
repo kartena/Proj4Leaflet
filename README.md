@@ -4,13 +4,17 @@ Proj4Leaflet [![NPM version](https://badge.fury.io/js/proj4leaflet.png)](http://
 This [Leaflet](http://leafletjs.com) plugin adds support for using projections supported by
 [Proj4js](https://github.com/proj4js/proj4js).
 
-For more details, see this [blog post on tiling and projections](http://blog.kartena.se/local-projections-in-a-world-of-spherical-mercator/).
+Leaflet comes with built in support for tiles in [Spherical Mercator](http://wiki.openstreetmap.org/wiki/EPSG:3857). If you need support for tile layers in other projections, the Proj4Leaflet plugin lets you use tiles in any projection supported by Proj4js, which means support for just about any projection commonly used.
 
-## Example
+Proj4Leaflet also adds support for GeoJSON in any projection, while Leaflet by itself assumes GeoJSON to always use WGS84 as its projection.
+
+## Usage
+
+Common use means making a new CRS instance for the projection you want to use.
 
 ```javascript
 // RT90 with map's pixel origin at RT90 coordinate (0, 0)
-new L.Proj.CRS('EPSG:2400',
+var crs = new L.Proj.CRS('EPSG:2400',
   '+lon_0=15.808277777799999 +lat_0=0.0 +k=1.0 +x_0=1500000.0 ' +
   '+y_0=0.0 +proj=tmerc +ellps=bessel +units=m ' +
   '+towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +no_defs',
@@ -19,15 +23,28 @@ new L.Proj.CRS('EPSG:2400',
   }
 );
 
+var map = L.map('map', {
+  crs: crs,
+  continuousWorld: true,
+  worldCopyJump: false
+});
+L.tileLayer('http://tile.example.com/example/{z}/{x}/{y}.png').addTo(map);
+```
+
+Using options when constructing the CRS, you can set the tile set's origin:
+```javascript
 // SWEREF 99 TM with map's pixel origin at (218128.7031, 6126002.9379)
-new L.Proj.CRS('EPSG:3006',
+var crs = new L.Proj.CRS('EPSG:3006',
   '+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
   {
     origin: [218128.7031, 6126002.9379],
     resolutions: [8192, 4096, 2048], // 3 example zoom level resolutions
   }
 );
+```
 
+To use a [TMS](http://wiki.osgeo.org/wiki/Tile_Map_Service_Specification) tile server, you must use a the class ```L.Proj.CRS.TMS``` as your CRS. Also, ```L.Proj.TileLayer.TMS``` must be used instead of Leaflet's standard L.TileLayer class.
+```javascript
 // EPSG:102012 served by TMS with bounds (-5401501.0, 4065283.0, 4402101.0, 39905283.0)
 new L.Proj.CRS.TMS('EPSG:102012',
     '+proj=lcc +lat_1=30 +lat_2=62 +lat_0=0 +lon_0=105 +x_0=0 +y_0=0 '
@@ -42,6 +59,10 @@ new L.Proj.CRS.TMS('EPSG:102012',
         ]
     }
 );
+
+...
+
+new L.Proj.TileLayer.TMS('http://tile.example.com/example/{z}/{x}/{y}.png', crs).addTo(map);
 ```
 
 ## Proj4js compatibility notice
@@ -49,7 +70,7 @@ Proj4js has breaking changes introduced after version 1.1.0. The current version
 uses Proj4js 1.3.4 or later. If you for some reason need Proj4js version 1.1.0 compatibility, you can
 still use Proj4Leaflet [version 0.5](https://github.com/kartena/Proj4Leaflet/tree/0.5).
 
-## Reference
+## API
 The plugin extends Leaflet with a few classes that helps integrating Proj4's projections into
 Leaflet's [ICRS](http://leafletjs.com/reference.html#icrs) interface.
 
