@@ -182,14 +182,9 @@
 			}
 		},
 
-		getTileUrl: function(tilePoint, zoom) {
-			var gridHeight;
-
-			if (zoom === undefined) {
-				zoom = this._map.getZoom();
-			}
-
-			gridHeight = Math.ceil(
+		getTileUrl: function(tilePoint) {
+			var zoom = this._map.getZoom(),
+				gridHeight = Math.ceil(
 				(this.crs.projectedBounds[3] - this.crs.projectedBounds[1]) /
 				this._projectedTileSize(zoom));
 
