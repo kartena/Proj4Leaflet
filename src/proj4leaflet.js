@@ -143,7 +143,6 @@
 
 	L.Proj.TileLayer.TMS = L.TileLayer.extend({
 		options: {
-			tms: true,
 			continuousWorld: true
 		},
 
