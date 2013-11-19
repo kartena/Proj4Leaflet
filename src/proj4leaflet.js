@@ -101,18 +101,27 @@
 			}
 
 			if (this.options.scales) {
-				this.scale = function(zoom) {
-					return this.options.scales[zoom];
-				};
+				this._scales = this.options.scales;
 			} else if (this.options.resolutions) {
-				this.scale = function(zoom) {
-					return 1 / this.options.resolutions[zoom];
-				};
+				this._scales = [];
+				for (var i = this.options.resolutions.length - 1; i >= 0; i--) {
+					if (this.options.resolutions[i]) {
+						this._scales[i] = 1 / this.options.resolutions[i];
+					}
+				}
 			}
+
+			this.scale = function(zoom) {
+				return this._scales[zoom];
+			};
 		}
 	});
 
 	L.Proj.CRS.TMS = L.Proj.CRS.extend({
+		options: {
+			tileSize: 256
+		},
+
 		initialize: function(a, b, c, d) {
 			var code,
 				def,
@@ -136,11 +145,37 @@
 			}
 
 			this.projectedBounds = projectedBounds;
+
+			this._sizes = this._calculateSizes();
+		},
+
+		_calculateSizes: function() {
+			var sizes = [],
+				crsBounds = this.projectedBounds,
+				projectedTileSize,
+				upperY,
+				i;
+			for (i = this._scales.length - 1; i >= 0; i--) {
+				if (this._scales[i]) {
+					projectedTileSize = this.options.tileSize / this._scales[i];
+					upperY = crsBounds[1] + Math.ceil((crsBounds[3] - crsBounds[1]) /
+											projectedTileSize) * projectedTileSize;
+					sizes[i] = L.point((crsBounds[2] - crsBounds[0]) / this._scales[i],
+						(upperY - crsBounds[1]) * this._scales[i]);
+				}
+			}
+
+			return sizes;
+		},
+
+		getSize: function(zoom) {
+			return this._sizes[zoom];
 		}
 	});
 
 	L.Proj.TileLayer = {};
 
+	// Note: deprecated and not necessary since 0.7, will be removed
 	L.Proj.TileLayer.TMS = L.TileLayer.extend({
 		options: {
 			continuousWorld: true

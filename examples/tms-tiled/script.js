@@ -11,13 +11,14 @@ var crs = new L.Proj.CRS.TMS(
 		zoomControl: true
 	});
 
-new L.Proj.TileLayer.TMS('http://i{s}.maps.daum-img.net/map/image/G03/i/1.20/L{z}/{y}/{x}.png', crs, {
+new L.TileLayer('http://i{s}.maps.daum-img.net/map/image/G03/i/1.20/L{z}/{y}/{x}.png', {
 	maxZoom: 14,
 	minZoom: 0,
 	zoomReverse: true,
 	subdomains: '0123',
 	continuousWorld: true,
-	attribution: 'ⓒ 2012 Daum'
+	attribution: 'ⓒ 2012 Daum',
+	tms: true
 }).addTo(map);
 
-map.setView([40.0, 127.0], 0);
+map.setView([38.0, 127.0], 0);
