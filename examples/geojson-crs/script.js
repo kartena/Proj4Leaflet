@@ -1,16 +1,3 @@
-requirejs.config({
-    'baseUrl': '../../lib',
-
-    /* Note: would normally put proj4leaflet in lib/ to avoid paths config */
-    'paths': {
-        /* path is relative to baseUrl */
-        'proj4leaflet': '../src/proj4leaflet'
-    }
-});
-
-require(['leaflet', 'proj4', 'proj4leaflet'],
-function(L, proj4) {
-
 var map = L.map('map').setView([44.97,-93.24], 11);
 
 // MapQuest OSM Tiles
@@ -52,5 +39,3 @@ L.Proj.geoJson(geojson, {
     return L.marker(latlng).bindPopup(feature.properties.name);
   }
 }).addTo(map);
-
-});
