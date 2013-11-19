@@ -8,6 +8,8 @@ Leaflet comes with built in support for tiles in [Spherical Mercator](http://wik
 
 Proj4Leaflet also adds support for GeoJSON in any projection, while Leaflet by itself assumes GeoJSON to always use WGS84 as its projection.
 
+For more details, see this blog post on [tiling and projections](http://blog.kartena.se/local-projections-in-a-world-of-spherical-mercator/).
+
 ## Usage
 
 Common use means making a new CRS instance for the projection you want to use.
@@ -43,7 +45,7 @@ var crs = new L.Proj.CRS('EPSG:3006',
 );
 ```
 
-To use a [TMS](http://wiki.osgeo.org/wiki/Tile_Map_Service_Specification) tile server, you must use a the class ```L.Proj.CRS.TMS``` as your CRS. Also, ```L.Proj.TileLayer.TMS``` must be used instead of Leaflet's standard L.TileLayer class.
+To use a [TMS](http://wiki.osgeo.org/wiki/Tile_Map_Service_Specification) tile server, you must use a the class ```L.Proj.CRS.TMS``` as your CRS. Also, the ```tms``` option must be set on the L.TileLayer instance.
 ```javascript
 // EPSG:102012 served by TMS with bounds (-5401501.0, 4065283.0, 4402101.0, 39905283.0)
 new L.Proj.CRS.TMS('EPSG:102012',
@@ -62,8 +64,10 @@ new L.Proj.CRS.TMS('EPSG:102012',
 
 ...
 
-new L.Proj.TileLayer.TMS('http://tile.example.com/example/{z}/{x}/{y}.png', crs).addTo(map);
+L.tileLayer('http://tile.example.com/example/{z}/{x}/{y}.png', {tms: true}).addTo(map);
 ```
+
+(See reference for L.CRS.TMS for details on TMS and Leaflet versions before 0.7.)
 
 ## Proj4js compatibility notice
 Proj4js has breaking changes introduced after version 1.1.0. The current version of Proj4Leaflet
@@ -111,7 +115,7 @@ L.Proj.CRS(code, proj4def, options)
 ###L.Proj.CRS.TMS
 ICRS implementation to work with a Proj4 projection that will be used together with a [TMS](http://en.wikipedia.org/wiki/Tile_Map_Service) tile server. Since TMS has its y axis in the opposite direction of Leaflet (and OpenStreetMap/Google Maps), this requires some extra work.
 
-_Note_: To work with a TMS tile server and Proj4Leaflet, you _must_ use ```L.Proj.TileLayerTMS``` instead of a standard L.TileLayer; the standard TileLayer can't handle other projections than spherical Mercator together with TMS.
+_Note_: If you use TMS and Leaflet _before_ version 0.7, you _must_ use ```L.Proj.TileLayerTMS``` instead of a standard L.TileLayer; the standard TileLayer before 0.7 couldn't handle other projections than spherical Mercator together with TMS.
 
 ####Usage example
 ```javascript
@@ -145,7 +149,9 @@ L.Proj.CRS.TMS(code, proj4def, projectedBounds, options)
 * ```options``` is an options object with the same keys as ```L.Proj.CRS```.
 
 ###L.Proj.TileLayer.TMS
-Extends [L.TileLayer](http://leafletjs.com/reference.html#tilelayer) to support TMS when working with Proj4 projections. Note that ```L.TileLayer``` will _not_ work with other projections than
+*Deprecated since version 0.7, since Leaflet 0.7 does not need this class.*
+
+Extends [L.TileLayer](http://leafletjs.com/reference.html#tilelayer) to support TMS when working with Proj4 projections. Note that for Leaflet versions before 0.7, ```L.TileLayer``` will _not_ work with other projections than
 EPSG:3857 if the option ```tms``` is enabled.
 
 ####Usage example
