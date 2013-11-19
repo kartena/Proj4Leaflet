@@ -36,9 +36,3 @@ var tileUrl = 'http://maps.aucklandcouncil.govt.nz/ArcGIS/rest/services/Aerials/
 
 map.addLayer(tilelayer);
 map.setView([-36.852931, 174.762057], 10);
-
-function onMapMouseMove(e) {
-//	console.log("xy: " + e.latlng);
-}
-
-map.on('mousemove', onMapMouseMove);

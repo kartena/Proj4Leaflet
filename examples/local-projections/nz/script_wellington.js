@@ -43,9 +43,3 @@ var tileUrl = 'http://gis.wcc.govt.nz/arcgis/rest/services/Basemap/Aerial_Photo/
 
 map.addLayer(tilelayer);
 map.setView([-41.288889, 174.777222], 5);
-
-function onMapMouseMove(e) {
-//	console.log("xy: " + e.latlng);
-}
-
-map.on('mousemove', onMapMouseMove);

@@ -14,10 +14,10 @@ var crs = new L.Proj.CRS('EPSG:3006',
 	});
 
 L.tileLayer('http://api.geosition.com/tile/osm-bright-3006/{z}/{x}/{y}.png', {
-	maxZoom: 14
-	,minZoom: 0
-	,continuousWorld: true
-	,attribution: 'Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>, Imagery &copy; 2013 <a href="http://www.kartena.se/">Kartena</a>'
+	maxZoom: 14,
+	minZoom: 0,
+	continuousWorld: true,
+	attribution: 'Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>, Imagery &copy; 2013 <a href="http://www.kartena.se/">Kartena</a>'
 }).addTo(map);
 
 map.setView([57.704, 11.965], 13);
