@@ -146,7 +146,8 @@ L.Proj.CRS.TMS(code, proj4def, projectedBounds, options)
 * ```code``` is the projection's SRS code (only used internally by the Proj4js library).
 * ```proj4def``` is the Proj4 definition for the projection to use
 * ```projectedBounds``` the bounds of the TMS tile grid in projected coordinates. The bounds need to be properly specified and align to the grid on all provided zoom levels, or markers and/or tiles will not align properly with the corresponding WGS84 coordinate.
-* ```options``` is an options object with the same keys as ```L.Proj.CRS```.
+* ```options``` is an options object with the same keys as ```L.Proj.CRS```. It also accepts one extra option:
+  * ```tileSize```: sets the tile size (in pixels) which the CRS should align to; in case the projected bounds do not align with the tile grid, CRS will align it using this tile size. Default is 256.
 
 ###L.Proj.TileLayer.TMS
 *Deprecated since version 0.7, since Leaflet 0.7 does not need this class.*
