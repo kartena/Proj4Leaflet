@@ -10,7 +10,7 @@
   // Define globals exposed by jQuery.
   "jquery": true,
 
-  "globals": {"L": false},
+  "globals": {"L": false, 'proj4': false},
 
   /*
    * ENFORCING OPTIONS
