@@ -160,7 +160,7 @@
 					projectedTileSize = this.options.tileSize / this._scales[i];
 					upperY = crsBounds[1] + Math.ceil((crsBounds[3] - crsBounds[1]) /
 											projectedTileSize) * projectedTileSize;
-					sizes[i] = L.point((crsBounds[2] - crsBounds[0]) / this._scales[i],
+					sizes[i] = L.point((crsBounds[2] - crsBounds[0]) * this._scales[i],
 						(upperY - crsBounds[1]) * this._scales[i]);
 				}
 			}
