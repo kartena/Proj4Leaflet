@@ -240,10 +240,12 @@
 			var crs;
 			if (geojson.crs && geojson.crs.type === 'name') {
 				crs = new L.Proj.CRS(geojson.crs.properties.name);
+			} else if (geojson.crs && geojson.crs.type) {
+				crs = new L.Proj.CRS(geojson.crs.type + ':' + geojson.crs.properties.code);
+			} else {
+				throw 'GeoJSON should have CRS defined.';
 			}
-			else if (geojson.crs && geojson.crs.type === 'EPSG') {
-				crs = new L.Proj.CRS('EPSG:' + geojson.crs.properties.code);
-			}
+
 			if (crs !== undefined) {
 				options = options || {};
 				options.coordsToLatLng = function(coords) {
