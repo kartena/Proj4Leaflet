@@ -110,10 +110,10 @@
 					}
 				}
 			}
+		},
 
-			this.scale = function(zoom) {
-				return this._scales[zoom];
-			};
+		scale: function(zoom) {
+			return this._scales[zoom];
 		}
 	});
 
