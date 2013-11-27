@@ -153,15 +153,13 @@
 			var sizes = [],
 				crsBounds = this.projectedBounds,
 				projectedTileSize,
-				upperY,
 				i;
 			for (i = this._scales.length - 1; i >= 0; i--) {
 				if (this._scales[i]) {
 					projectedTileSize = this.options.tileSize / this._scales[i];
-					upperY = crsBounds[1] + Math.ceil((crsBounds[3] - crsBounds[1]) /
-											projectedTileSize) * projectedTileSize;
-					sizes[i] = L.point((crsBounds[2] - crsBounds[0]) / this._scales[i],
-						(upperY - crsBounds[1]) * this._scales[i]);
+					sizes[i] = L.point((crsBounds[2] - crsBounds[0]) * this._scales[i],
+						Math.ceil((crsBounds[3] - crsBounds[1]) / projectedTileSize)
+						* projectedTileSize * this._scales[i]);
 				}
 			}
 

@@ -176,16 +176,38 @@ describe('L.Proj.CRS.TMS', function() {
 			tp.y = Math.round(tp.y / 256) - 1;
 			expect(tileLayer.getTileUrl(tp)).toBe('http://test/' + i + '/0/0.png');
 		}
-	})
+	});
+
+	it('calculates the correct size', function() {
+		var resolutions = [1, 0.5, 0.25],
+		    crs = new L.Proj.CRS.TMS(
+		    	'EPSG:2400',
+		    	'+lon_0=15.808277777799999 +lat_0=0.0 +k=1.0 +x_0=1500000.0 ' +
+		    	'+y_0=0.0 +proj=tmerc +ellps=bessel +units=m ' +
+		    	'+towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +no_defs',
+		    	[0, 0, 4000, 4000], {
+		    		resolutions: resolutions
+	    	}),
+		    i,
+		    size,
+		    tileSize;
+
+		for (i = 0; i < resolutions.length; i++) {
+			size = crs.getSize(i);
+			tileSize = resolutions[i] * 256;
+			expect(size.x).toBe(4000 / resolutions[i]);
+			expect(size.y).toBe((Math.ceil(4000 / tileSize) * tileSize) / resolutions[i]);
+		}
+	});
 });
 
 describe('legacy API', function() {
 	it('can create a CRS from L.Proj function', function() {
 		var crs = L.CRS.proj4js(
-			'EPSG:2400',
-			'+lon_0=15.808277777799999 +lat_0=0.0 +k=1.0 +x_0=1500000.0 ' +
-			'+y_0=0.0 +proj=tmerc +ellps=bessel +units=m ' +
-			'+towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +no_defs');
+		    'EPSG:2400',
+		    '+lon_0=15.808277777799999 +lat_0=0.0 +k=1.0 +x_0=1500000.0 ' +
+		    '+y_0=0.0 +proj=tmerc +ellps=bessel +units=m ' +
+		    '+towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +no_defs');
 		var pp = crs.project(new L.LatLng(55.723337, 14.194313));
 		expect(pp.x).toBeCloseTo(1398776, 0)
 		expect(pp.y).toBeCloseTo(6178304, 0);
