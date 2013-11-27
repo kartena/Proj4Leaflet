@@ -114,6 +114,24 @@
 
 		scale: function(zoom) {
 			return this._scales[zoom];
+		},
+
+		getSize: function(zoom) {
+			var b = this.options.bounds,
+			    s,
+			    min,
+			    max;
+
+			if (b) {
+				s = this.scale(zoom);
+				min = this.transformation.transform(b.min, s);
+				max = this.transformation.transform(b.max, s);
+				return L.point(Math.abs(max.x - min.x), Math.abs(max.y - min.y));
+			} else {
+				// Backwards compatibility with Leaflet < 0.7
+				s = 256 * Math.pow(2, zoom);
+				return L.point(s, s);
+			}
 		}
 	});
 
