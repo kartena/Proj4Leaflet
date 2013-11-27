@@ -237,8 +237,14 @@
 
 	L.Proj.GeoJSON = L.GeoJSON.extend({
 		initialize: function(geojson, options) {
+			var crs;
 			if (geojson.crs && geojson.crs.type === 'name') {
-				var crs = new L.Proj.CRS(geojson.crs.properties.name);
+				crs = new L.Proj.CRS(geojson.crs.properties.name);
+			}
+			else if (geojson.crs && geojson.crs.type === 'EPSG') {
+				crs = new L.Proj.CRS('EPSG:' + geojson.crs.properties.code);
+			}
+			if (crs !== undefined) {
 				options = options || {};
 				options.coordsToLatLng = function(coords) {
 					var point = L.point(coords[0], coords[1]);
