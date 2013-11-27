@@ -209,6 +209,10 @@
 			}
 
 			L.TileLayer.prototype.initialize.call(this, urlTemplate, options);
+			// Enabling tms will cause Leaflet to also try to do TMS, which will
+			// break (at least prior to 0.7.0). Actively disable it, to prevent
+			// well-meaning users from shooting themselves in the foot.
+			this.options.tms = false;
 			this.crs = crs;
 			crsBounds = this.crs.projectedBounds;
 
