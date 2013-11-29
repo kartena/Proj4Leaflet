@@ -111,6 +111,7 @@ L.Proj.CRS(code, proj4def, options)
   * ```transformation```: an [L.Transformation](http://leafletjs.com/reference.html#transformation) that is used to transform the projected coordinates to pixel coordinates; default is ```L.Transformation(1, 0, -1, 0)```
   * ```scales```: an array of scales (pixels per projected coordinate unit) for each corresponding zoom level; default is to use Leaflet's native scales. You should use ```scales``` _or_ ```resolutions```, not both.
   * ```resolutions```: an array of resolutions (projected coordinate units per pixel) for each corresponding zoom level; default is to use Leaflet's native resolutions. You should use ```scales``` _or_ ```resolutions```, not both.
+  * ```bounds```: An [L.bounds](http://leafletjs.com/reference.html#bounds) providing the bounds of CRS in projected coordinates. If defined, Proj4Leaflet will use this in the ```getSize``` method, otherwise reverting to Leaflet's default size for spherical Mercator.
 
 ###L.Proj.CRS.TMS
 ICRS implementation to work with a Proj4 projection that will be used together with a [TMS](http://en.wikipedia.org/wiki/Tile_Map_Service) tile server. Since TMS has its y axis in the opposite direction of Leaflet (and OpenStreetMap/Google Maps), this requires some extra work.
