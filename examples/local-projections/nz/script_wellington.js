@@ -19,8 +19,6 @@ var crs = new L.Proj.CRS('EPSG:2193',
 
 var	map = new L.Map('map', {
 	crs: crs,
-	continuousWorld: true,
-	worldCopyJump: false
 });
 
 /*
@@ -36,7 +34,6 @@ var tileUrl = 'http://gis.wcc.govt.nz/arcgis/rest/services/Basemap/Aerial_Photo/
 	tilelayer = new L.TileLayer(tileUrl, {
 		maxZoom: 10,
 		minZoom: 0,
-		continuousWorld: true,
 		attribution: attrib,
 		tileSize: 512
 	});
