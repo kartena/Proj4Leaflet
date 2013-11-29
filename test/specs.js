@@ -113,24 +113,6 @@ describe('L.Proj.CRS', function() {
 		expect(up.lng).toBe(ll.lat);
 	});
 
-	it('legacy size', function() {
-		var crs = new L.Proj.CRS(
-			'EPSG:2400',
-			'+lon_0=15.808277777799999 +lat_0=0.0 +k=1.0 +x_0=1500000.0 ' +
-			'+y_0=0.0 +proj=tmerc +ellps=bessel +units=m ' +
-			'+towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +no_defs'),
-		    worldSize = 256,
-		    i,
-		    size;
-
-		for (i = 0; i <= 22; i++) {
-			size = crs.getSize(i);
-			expect(size.x).toBe(worldSize);
-			expect(size.y).toBe(worldSize);
-			worldSize *= 2;
-		}
-	});
-
 	it('size from bounds', function() {
 		var resolutions = [2, 1, 0.5],
 			crs = new L.Proj.CRS(
@@ -140,118 +122,17 @@ describe('L.Proj.CRS', function() {
 			'+towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +no_defs', {
 				bounds: L.bounds([0, 0], [4000, 5000]),
 				resolutions: resolutions,
-				origin: [0, 4000]
+				origin: [0, 5000]
 			}),
 		    worldSize = 256,
 		    i,
-		    size;
+		    bounds;
 
 		for (i = 0; i < resolutions.length; i++) {
-			size = crs.getSize(i);
-			expect(size.x).toBe(4000 / resolutions[i]);
-			expect(size.y).toBe(5000 / resolutions[i]);
+			bounds = crs.getProjectedBounds(i);
+			expect(bounds.max.x).toBe(4000 / resolutions[i]);
+			expect(bounds.max.y).toBe(5000 / resolutions[i]);
 			worldSize *= 2;
 		}
-	});
-});
-
-describe('L.Proj.CRS.TMS', function() {
-	it('can create an instance from a SRS code and proj4 def', function() {
-		var crs = new L.Proj.CRS.TMS(
-			'EPSG:2400',
-			'+lon_0=15.808277777799999 +lat_0=0.0 +k=1.0 +x_0=1500000.0 ' +
-			'+y_0=0.0 +proj=tmerc +ellps=bessel +units=m ' +
-			'+towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +no_defs',
-			[50,50,100,100], {
-				resolutions: [1],
-			});
-
-		expect(crs.code).toBe('EPSG:2400');
-	});
-
-	it('transformation to be set from projected bounds', function() {
-		var crs = new L.Proj.CRS.TMS(
-			'EPSG:2400',
-			'+lon_0=15.808277777799999 +lat_0=0.0 +k=1.0 +x_0=1500000.0 ' +
-			'+y_0=0.0 +proj=tmerc +ellps=bessel +units=m ' +
-			'+towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +no_defs',
-			[50,50,100,100], {
-				resolutions: [1],
-			}),
-			t = crs.transformation;
-
-		expect(t._a).toBe(1);
-		expect(t._b).toBe(-50);
-		expect(t._c).toBe(-1);
-		expect(t._d).toBe(100)
-	});
-
-	it('can adjust bounds to align with tilegrid', function() {
-		var resolutions = [6386.233628906251, 3193.1168144531257, 1596.5584072265628, 798.2792036132814, 399.1396018066407, 199.56980090332036, 99.78490045166018, 49.89245022583009],
-			crs = new L.Proj.CRS.TMS('EPSG:900913',
-				'+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs',
-				[-851225.043, 6422198.546, 196550.197, 9691000.164],
-				{
-					resolutions: resolutions
-				}
-			),
-			tileLayer = new L.Proj.TileLayer.TMS('http://test/{z}/{x}/{y}.png', crs),
-			crs = tileLayer.crs,
-			t = crs.transformation,
-			upperLeft = new L.Point(-851225.043, 9691950.164),
-			lowerLeft = new L.Point(-851225.043, 6422198.546),
-			tp;
-
-		for (i = 0; i < resolutions.length; i++) {
-			// Mock a very stupid map
-			tileLayer._map = {getZoom: function() { return i; }};
-
-			tp = t.transform(upperLeft, crs.scale(i));
-			expect(tp.x).toBeCloseTo(0, 6);
-			expect(tp.y).toBeCloseTo(0, 6);
-
-			tp = t.transform(lowerLeft, crs.scale(i));
-			// Convert to a tile point
-			tp.x = Math.round(tp.x / 256);
-			// -1 since Leaflet uses tile's upper edge as reference
-			tp.y = Math.round(tp.y / 256) - 1;
-			expect(tileLayer.getTileUrl(tp)).toBe('http://test/' + i + '/0/0.png');
-		}
-	});
-
-	it('calculates the correct size', function() {
-		var resolutions = [1, 0.5, 0.25],
-		    crs = new L.Proj.CRS.TMS(
-		    	'EPSG:2400',
-		    	'+lon_0=15.808277777799999 +lat_0=0.0 +k=1.0 +x_0=1500000.0 ' +
-		    	'+y_0=0.0 +proj=tmerc +ellps=bessel +units=m ' +
-		    	'+towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +no_defs',
-		    	[0, 0, 4000, 4000], {
-		    		resolutions: resolutions
-	    	}),
-		    i,
-		    size,
-		    tileSize;
-
-		for (i = 0; i < resolutions.length; i++) {
-			size = crs.getSize(i);
-			tileSize = resolutions[i] * 256;
-			expect(size.x).toBe(4000 / resolutions[i]);
-			expect(size.y).toBe((Math.ceil(4000 / tileSize) * tileSize) / resolutions[i]);
-		}
-	});
-});
-
-describe('legacy API', function() {
-	it('can create a CRS from L.Proj function', function() {
-		var crs = L.CRS.proj4js(
-		    'EPSG:2400',
-		    '+lon_0=15.808277777799999 +lat_0=0.0 +k=1.0 +x_0=1500000.0 ' +
-		    '+y_0=0.0 +proj=tmerc +ellps=bessel +units=m ' +
-		    '+towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +no_defs');
-		var pp = crs.project(new L.LatLng(55.723337, 14.194313));
-		expect(pp.x).toBeCloseTo(1398776, 0)
-		expect(pp.y).toBeCloseTo(6178304, 0);
-		expect(crs.code).toBe('EPSG:2400');
 	});
 });
