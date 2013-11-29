@@ -24,27 +24,10 @@
 	};
 
 	L.Proj.Projection = L.Class.extend({
-		initialize: function(a, def, bounds) {
-			if (L.Proj._isProj4Obj(a)) {
-				this._proj = a;
-				bounds = def;
-			} else {
-				var code = a;
-				if (def) {
-					proj4.defs(code, def);
-				} else if (proj4.defs[code] === undefined) {
-					var urn = code.split(':');
-					if (urn.length > 3) {
-						code = urn[urn.length - 3] + ':' + urn[urn.length - 1];
-					}
-					if (proj4.defs[code] === undefined) {
-						throw 'No projection definition for code ' + code;
-					}
-				}
-				this._proj = proj4(code);
-			}
-
-			this.bounds = bounds;
+		initialize: function(code, def, bounds) {
+			var isP4 = L.Proj._isProj4Obj(code);
+			this._proj = isP4 ? code : this._projFromCodeDef(code, def);
+			this.bounds = isP4 ? def : bounds;
 		},
 
 		project: function (latlng) {
@@ -55,6 +38,22 @@
 		unproject: function (point, unbounded) {
 			var point2 = this._proj.inverse([point.x, point.y]);
 			return new L.LatLng(point2[1], point2[0], unbounded);
+		},
+
+		_projFromCodeDef: function(code, def) {
+			if (def) {
+				proj4.defs(code, def);
+			} else if (proj4.defs[code] === undefined) {
+				var urn = code.split(':');
+				if (urn.length > 3) {
+					code = urn[urn.length - 3] + ':' + urn[urn.length - 1];
+				}
+				if (proj4.defs[code] === undefined) {
+					throw 'No projection definition for code ' + code;
+				}
+			}
+
+			return proj4(code);
 		}
 	});
 
@@ -66,7 +65,10 @@
 		},
 
 		initialize: function(a, b, c) {
-			var code, proj, def, options;
+			var code,
+			    proj,
+			    def,
+			    options;
 
 			if (L.Proj._isProj4Obj(a)) {
 				proj = a;
