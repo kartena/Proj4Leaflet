@@ -189,8 +189,6 @@ Extends [L.GeoJSON](http://leafletjs.com/reference.html#geojson) to add CRS supp
 
 **Note:** The relevant Proj4 definition should be defined directly via `proj4.defs` before loading the GeoJSON object.  If it is not, proj4leaflet will throw an error.
 
-Also, note that future versions of the GeoJSON spec may not include explicit CRS support.  See https://github.com/GeoJSONWG/draft-geojson/pull/6 for more information.
-
 ####Usage Example
 ```javascript
 proj4.defs("urn:ogc:def:crs:EPSG::26915", "+proj=utm +zone=15 +ellps=GRS80 +datum=NAD83 +units=m +no_defs");
