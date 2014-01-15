@@ -4,11 +4,16 @@ Proj4Leaflet [![NPM version](https://badge.fury.io/js/proj4leaflet.png)](http://
 This [Leaflet](http://leafletjs.com) plugin adds support for using projections supported by
 [Proj4js](https://github.com/proj4js/proj4js).
 
+## Features
+
+* Use tiles in any projection supported by Proj4js
+* Use GeoJSON in CRSs' other than WGS84
+
 Leaflet comes with built in support for tiles in [Spherical Mercator](http://wiki.openstreetmap.org/wiki/EPSG:3857). If you need support for tile layers in other projections, the Proj4Leaflet plugin lets you use tiles in any projection supported by Proj4js, which means support for just about any projection commonly used.
 
 Proj4Leaflet also adds support for GeoJSON in any projection, while Leaflet by itself assumes GeoJSON to always use WGS84 as its projection.
 
-For more details, see this blog post on [tiling and projections](http://blog.kartena.se/local-projections-in-a-world-of-spherical-mercator/).
+For more details, see [tiling and projections](http://blog.kartena.se/local-projections-in-a-world-of-spherical-mercator/).
 
 ## Usage
 
@@ -67,7 +72,7 @@ new L.Proj.CRS.TMS('EPSG:102012',
 L.tileLayer('http://tile.example.com/example/{z}/{x}/{y}.png', {tms: true}).addTo(map);
 ```
 
-(See reference for L.CRS.TMS for details on TMS and Leaflet versions before 0.7.)
+(See reference for [L.CRS.TMS](#lprojcrstms) for details on TMS and Leaflet versions before 0.7.)
 
 ## Proj4js compatibility notice
 Proj4js has breaking changes introduced after version 1.1.0. The current version of Proj4Leaflet
