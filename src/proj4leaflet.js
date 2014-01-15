@@ -268,8 +268,6 @@
 				crs = new L.Proj.CRS(geojson.crs.properties.name);
 			} else if (geojson.crs && geojson.crs.type) {
 				crs = new L.Proj.CRS(geojson.crs.type + ':' + geojson.crs.properties.code);
-			} else {
-				throw 'GeoJSON should have CRS defined.';
 			}
 
 			if (crs !== undefined) {
