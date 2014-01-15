@@ -242,6 +242,87 @@ describe('L.Proj.CRS.TMS', function() {
 	});
 });
 
+describe('L.Proj.GeoJSON', function() {
+	beforeEach(function() {
+		proj4.defs('EPSG:3006', '+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs');
+	});
+
+	it('handles named CRS', function() {
+		var geojson = {
+				'type': 'Point',
+				'coordinates': [319180, 6399862],
+				'crs': {
+					'type': 'name',
+					'properties': {
+						'name': 'EPSG:3006'
+					}
+				}
+			}
+
+		L.Proj.geoJson(geojson, {
+			onEachFeature: function(f, l) {
+				var ll = l.getLatLng();
+
+				expect(ll.lat).toBeCloseTo(57.70451, 5);
+				expect(ll.lng).toBeCloseTo(11.96526, 5);
+			}
+		});
+	});
+
+	it('handles legacy CRS', function() {
+		var geojson = {
+				'type': 'Point',
+				'coordinates': [319180, 6399862],
+				'crs': {
+					'type': 'EPSG',
+					'properties': {
+						'code': 3006
+					}
+				}
+			};
+
+		L.Proj.geoJson(geojson, {
+			onEachFeature: function(f, l) {
+				var ll = l.getLatLng();
+
+				expect(ll.lat).toBeCloseTo(57.70451, 5);
+				expect(ll.lng).toBeCloseTo(11.96526, 5);
+			}
+		});
+	});
+
+	it('handles missing CRS', function() {
+		var geojson = {
+				'type': 'Point',
+				'coordinates': [11.96526, 57.70451]
+			};
+
+		L.Proj.geoJson(geojson, {
+			onEachFeature: function(f, l) {
+				var ll = l.getLatLng();
+
+				expect(ll.lat).toBeCloseTo(57.70451, 5);
+				expect(ll.lng).toBeCloseTo(11.96526, 5);
+			}
+		});
+	});
+
+	it('throws on undefined CRS', function() {
+		var geojson = {
+				'type': 'Point',
+				'coordinates': [319180, 6399862],
+				'crs': {
+					'type': 'name',
+					'properties': {
+						'name': 'PFGL:1337'
+					}
+				}
+			};
+
+		expect(function() { L.Proj.geoJson(geojson); }).toThrow();
+	});
+});
+
 describe('legacy API', function() {
 	it('can create a CRS from L.Proj function', function() {
 		var crs = L.CRS.proj4js(
