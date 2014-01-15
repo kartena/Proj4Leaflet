@@ -263,21 +263,31 @@
 
 	L.Proj.GeoJSON = L.GeoJSON.extend({
 		initialize: function(geojson, options) {
+			L.GeoJSON.prototype.initialize.call(this, null, options);
+			this.addData(geojson);
+		},
+
+		addData: function(geojson) {
 			var crs;
-			if (geojson.crs && geojson.crs.type === 'name') {
-				crs = new L.Proj.CRS(geojson.crs.properties.name);
-			} else if (geojson.crs && geojson.crs.type) {
-				crs = new L.Proj.CRS(geojson.crs.type + ':' + geojson.crs.properties.code);
+
+			if (geojson) {
+				if (geojson.crs && geojson.crs.type === 'name') {
+					crs = new L.Proj.CRS(geojson.crs.properties.name);
+				} else if (geojson.crs && geojson.crs.type) {
+					crs = new L.Proj.CRS(geojson.crs.type + ':' + geojson.crs.properties.code);
+				}
+
+				if (crs !== undefined) {
+					this.options.coordsToLatLng = function(coords) {
+						var point = L.point(coords[0], coords[1]);
+						return crs.projection.unproject(point);
+					};
+				} else {
+					delete this.options.coordsToLatLng;
+				}
 			}
 
-			if (crs !== undefined) {
-				options = options || {};
-				options.coordsToLatLng = function(coords) {
-					var point = L.point(coords[0], coords[1]);
-					return crs.projection.unproject(point);
-				};
-			}
-			L.GeoJSON.prototype.initialize.call(this, geojson, options);
+			L.GeoJSON.prototype.addData.call(this, geojson);
 		}
 	});
 
