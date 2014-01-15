@@ -169,15 +169,21 @@
 
 		_calculateSizes: function() {
 			var sizes = [],
-				crsBounds = this.projectedBounds,
-				projectedTileSize,
-				i;
+			    crsBounds = this.projectedBounds,
+			    projectedTileSize,
+			    i,
+			    x,
+			    y;
 			for (i = this._scales.length - 1; i >= 0; i--) {
 				if (this._scales[i]) {
 					projectedTileSize = this.options.tileSize / this._scales[i];
-					sizes[i] = L.point((crsBounds[2] - crsBounds[0]) * this._scales[i],
-						Math.ceil((crsBounds[3] - crsBounds[1]) / projectedTileSize)
-						* projectedTileSize * this._scales[i]);
+					// to prevent very small rounding errors from causing us to round up,
+					// cut any decimals after 3rd before rounding up.
+					x = Math.ceil(parseFloat((crsBounds[2] - crsBounds[0]) / projectedTileSize).toPrecision(3)) *
+					    projectedTileSize * this._scales[i];
+					y = Math.ceil(parseFloat((crsBounds[3] - crsBounds[1]) / projectedTileSize).toPrecision(3)) *
+					    projectedTileSize * this._scales[i];
+					sizes[i] = L.point(x, y);
 				}
 			}
 

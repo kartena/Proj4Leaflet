@@ -236,7 +236,7 @@ describe('L.Proj.CRS.TMS', function() {
 		for (i = 0; i < resolutions.length; i++) {
 			size = crs.getSize(i);
 			tileSize = resolutions[i] * 256;
-			expect(size.x).toBe(4000 / resolutions[i]);
+			expect(size.x).toBe((Math.ceil(4000 / tileSize) * tileSize) / resolutions[i]);
 			expect(size.y).toBe((Math.ceil(4000 / tileSize) * tileSize) / resolutions[i]);
 		}
 	});
