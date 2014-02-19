@@ -282,8 +282,6 @@
 						var point = L.point(coords[0], coords[1]);
 						return crs.projection.unproject(point);
 					};
-				} else {
-					delete this.options.coordsToLatLng;
 				}
 			}
 
