@@ -282,12 +282,20 @@
 						var point = L.point(coords[0], coords[1]);
 						return crs.projection.unproject(point);
 					};
-				} else {
+				} else if (!this._inBaseAddData) {
 					delete this.options.coordsToLatLng;
 				}
 			}
 
-			L.GeoJSON.prototype.addData.call(this, geojson);
+			// Base class' addData might call us recursively, but
+			// CRS shouldn't be cleared in that case, since CRS applies
+			// to the whole GeoJSON, inluding sub-features.
+			this._inBaseAddData = true;
+			try {
+				L.GeoJSON.prototype.addData.call(this, geojson);
+			} finally {
+				delete this._inBaseAddData;
+			}
 		}
 	});
 

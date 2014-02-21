@@ -245,6 +245,7 @@ describe('L.Proj.CRS.TMS', function() {
 describe('L.Proj.GeoJSON', function() {
 	beforeEach(function() {
 		proj4.defs('EPSG:3006', '+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs');
+		proj4.defs('EPSG:28992', '+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs ');
 	});
 
 	it('handles named CRS', function() {
@@ -359,6 +360,77 @@ describe('L.Proj.GeoJSON', function() {
 
 		l = L.Proj.geoJson(geojson, options);
 		l.addData(geojson);
+
+		expect(options.onEachFeature).toHaveBeenCalled();
+	});
+
+	it('handles FeatureCollection', function() {
+		var geojson = {
+				'type':'FeatureCollection',
+				'features': [
+					{
+						'type':'Feature',
+						'id':'pand',
+						'geometry':{'type':'MultiPolygon','coordinates':[[[[234038.74,580648.672],[234034.874,580653.938],[234023.226,580669.804],[234018.279,580668.348],[234008.066,580665.342],[234012.423,580654.134],[234008.164,580652.906],[234010.63,580640.48],[234038.74,580648.672]]]]},
+						'properties':{}
+					}
+				],
+				'crs':{'type':'EPSG','properties':{'code':'28992'}}
+			},
+			options = {
+				onEachFeature: function(f, l) {
+					var ll = l.getLatLngs();
+
+					expect(ll[0].lat).toBeCloseTo(53.2081, 5);
+					expect(ll[0].lng).toBeCloseTo(6.5711, 5);
+				}
+			},
+			l;
+
+		spyOn(options, 'onEachFeature');
+
+		l = L.Proj.geoJson(geojson, options);
+		l.addData(geojson);
+
+		expect(options.onEachFeature).toHaveBeenCalled();
+	});
+
+	it('defaults to WGS84 after feature with CRS', function() {
+		var geojson1 = {
+				'type':'FeatureCollection',
+				'features': [
+					{
+						'type':'Feature',
+						'id':'pand',
+						'geometry':{'type':'MultiPolygon','coordinates':[[[[234038.74,580648.672],[234034.874,580653.938],[234023.226,580669.804],[234018.279,580668.348],[234008.066,580665.342],[234012.423,580654.134],[234008.164,580652.906],[234010.63,580640.48],[234038.74,580648.672]]]]},
+						'properties':{}
+					}
+				],
+				'crs':{'type':'EPSG','properties':{'code':'28992'}}
+			},
+			geojson2 = {
+				'type': 'Point',
+				'coordinates': [11.5, 57.5],
+			},
+			i = 0,
+			options = {
+				onEachFeature: function(f, l) {
+					if (i === 1) {
+						var ll = l.getLatLngs();
+
+						expect(ll[0].lat).toBe(57.5);
+						expect(ll[0].lng).toBe(11.5);
+					}
+
+					i++;
+				}
+			},
+			l;
+
+		spyOn(options, 'onEachFeature');
+
+		l = L.Proj.geoJson(geojson1, options);
+		l.addData(geojson2);
 
 		expect(options.onEachFeature).toHaveBeenCalled();
 	});
