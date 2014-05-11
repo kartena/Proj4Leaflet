@@ -263,6 +263,7 @@
 
 	L.Proj.GeoJSON = L.GeoJSON.extend({
 		initialize: function(geojson, options) {
+			this._callLevel = 0;
 			L.GeoJSON.prototype.initialize.call(this, null, options);
 			this.addData(geojson);
 		},
@@ -282,19 +283,20 @@
 						var point = L.point(coords[0], coords[1]);
 						return crs.projection.unproject(point);
 					};
-				} else if (!this._inBaseAddData) {
-					delete this.options.coordsToLatLng;
 				}
 			}
 
 			// Base class' addData might call us recursively, but
 			// CRS shouldn't be cleared in that case, since CRS applies
 			// to the whole GeoJSON, inluding sub-features.
-			this._inBaseAddData = true;
+			this._callLevel++;
 			try {
 				L.GeoJSON.prototype.addData.call(this, geojson);
 			} finally {
-				delete this._inBaseAddData;
+				this._callLevel--;
+				if (this._callLevel === 0) {
+					delete this.options.coordsToLatLng;
+				}
 			}
 		}
 	});
