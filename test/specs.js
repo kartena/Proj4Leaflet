@@ -393,6 +393,7 @@ describe('L.Proj.GeoJSON', function() {
 		l.addData(geojson);
 
 		expect(options.onEachFeature).toHaveBeenCalled();
+		expect(l.options.coordsToLatLng).toBeFalsy();
 	});
 
 	it('defaults to WGS84 after feature with CRS', function() {
@@ -416,10 +417,10 @@ describe('L.Proj.GeoJSON', function() {
 			options = {
 				onEachFeature: function(f, l) {
 					if (i === 1) {
-						var ll = l.getLatLngs();
+						var ll = l.getLatLng();
 
-						expect(ll[0].lat).toBe(57.5);
-						expect(ll[0].lng).toBe(11.5);
+						expect(ll.lat).toBe(57.5);
+						expect(ll.lng).toBe(11.5);
 					}
 
 					i++;
@@ -427,12 +428,45 @@ describe('L.Proj.GeoJSON', function() {
 			},
 			l;
 
-		spyOn(options, 'onEachFeature');
+		spyOn(options, 'onEachFeature').andCallThrough();
 
 		l = L.Proj.geoJson(geojson1, options);
 		l.addData(geojson2);
 
 		expect(options.onEachFeature).toHaveBeenCalled();
+		expect(l.options.coordsToLatLng).toBeFalsy();
+	});
+
+	it('handles FeatureCollection with multiple features properly', function() {
+		var options = {
+				onEachFeature: function(f, l) {
+					function assertLatLngs(latlngs) {
+						var latlng,
+						    i;
+						for (i = 0; i < latlngs.length; i++) {
+							latlng = latlngs[i];
+							if (L.Util.isArray(latlng)) {
+								assertLatLngs(latlng);
+							} else {
+								expect(latlng.lat).toBeGreaterThan(-90);
+								expect(latlng.lat).toBeLessThan(90);
+								expect(latlng.lng).toBeGreaterThan(-180);
+								expect(latlng.lng).toBeLessThan(180);
+							}
+						}
+					}
+
+					assertLatLngs((l.getLatLngs && l.getLatLngs()) || (l.getLatLng && [l.getLatLng()]));
+				}
+			},
+			spy = spyOn(options, 'onEachFeature').andCallThrough(),
+			l;
+
+		proj4.defs('EPSG:3006', '+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs');
+		l = L.Proj.geoJson(featureCollection, options); // from test-data.js
+
+		expect(options.onEachFeature).toHaveBeenCalled();
+		expect(spy.callCount).toBe(3);
 	});
 });
 
@@ -444,7 +478,7 @@ describe('legacy API', function() {
 		    '+y_0=0.0 +proj=tmerc +ellps=bessel +units=m ' +
 		    '+towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +no_defs');
 		var pp = crs.project(new L.LatLng(55.723337, 14.194313));
-		expect(pp.x).toBeCloseTo(1398776, 0)
+		expect(pp.x).toBeCloseTo(1398776, 0);
 		expect(pp.y).toBeCloseTo(6178304, 0);
 		expect(crs.code).toBe('EPSG:2400');
 	});
