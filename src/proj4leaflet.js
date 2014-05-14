@@ -303,6 +303,57 @@
 		return new L.Proj.GeoJSON(geojson, options);
 	};
 
+	L.Proj.ImageOverlay = L.ImageOverlay.extend({
+		initialize: function(url, bounds, options) {
+			L.ImageOverlay.prototype.initialize.call(this, url, null, options);
+			this._projBounds = bounds;
+		},
+
+		/* Danger ahead: overriding internal methods in Leaflet.
+		   I've decided to do this rather than making a copy of L.ImageOverlay
+		   and making very tiny modifications to it. Future will tell if this
+		   was wise or not. */
+		_animateZoom: function (e) {
+			var northwest = L.point(this._projBounds.min.x, this._projBounds.max.y),
+				southeast =  L.point(this._projBounds.max.x, this._projBounds.min.y),
+				topLeft = this._projectedToNewLayerPoint(northwest, e.zoom, e.center),
+			    size = this._projectedToNewLayerPoint(southeast, e.zoom, e.center).subtract(topLeft),
+			    origin = topLeft.add(size._multiplyBy((1 - 1 / e.scale) / 2));
+
+			this._image.style[L.DomUtil.TRANSFORM] =
+		        L.DomUtil.getTranslateString(origin) + ' scale(' + this._map.getZoomScale(e.zoom) + ') ';
+		},
+
+		_reset: function() {
+			var zoom = this._map.getZoom(),
+				pixelOrigin = this._map.getPixelOrigin(),
+				bounds = L.bounds(this._transform(this._projBounds.min, zoom)._subtract(pixelOrigin),
+					this._transform(this._projBounds.max, zoom)._subtract(pixelOrigin)),
+				size = bounds.getSize(),
+				image = this._image;
+
+			L.DomUtil.setPosition(image, bounds.min);
+			image.style.width  = size.x + 'px';
+			image.style.height = size.y + 'px';
+		},
+
+		_projectedToNewLayerPoint: function (point, newZoom, newCenter) {
+			var topLeft = this._map._getNewTopLeftPoint(newCenter, newZoom).add(this._map._getMapPanePos());
+			return this._transform(point, newZoom)._subtract(topLeft);
+		},
+
+		_transform: function(p, zoom) {
+			var crs = this._map.options.crs,
+				transformation = crs.transformation,
+				scale = crs.scale(zoom);
+			return transformation.transform(p, scale);
+		}
+	});
+
+	L.Proj.imageOverlay = function(url, bounds, options) {
+		return new L.Proj.ImageOverlay(url, bounds, options);
+	};
+
 	if (typeof L.CRS !== 'undefined') {
 		// This is left here for backwards compatibility
 		L.CRS.proj4js = (function () {

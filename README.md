@@ -194,6 +194,7 @@ Extends [L.GeoJSON](http://leafletjs.com/reference.html#geojson) to add CRS supp
 
 **Note:** The relevant Proj4 definition should be defined directly via `proj4.defs` before loading the GeoJSON object.  If it is not, proj4leaflet will throw an error.
 
+
 ####Usage Example
 ```javascript
 proj4.defs("urn:ogc:def:crs:EPSG::26915", "+proj=utm +zone=15 +ellps=GRS80 +datum=NAD83 +units=m +no_defs");
@@ -213,4 +214,20 @@ var geojson = {
 var map = L.map('map');
 // ...
 L.Proj.geoJson(geojson).addTo(map);
+```
+
+###L.Proj.ImageOverlay
+
+Works like [L.ImageOverlay](http://leafletjs.com/reference.html#imageoverlay), but accepts bounds in the map's
+projected coordinate system instead of latitudes and longitudes. This is useful when the projected coordinate systems
+axis do not align with the latitude and longitudes, which results in distortion with the default image overlay in Leaflet.
+
+####Usage Example
+```javascript
+// Coordinate system is EPSG:28992 / Amersfoort / RD New
+var imageBounds = L.bounds(
+  [145323.20011251318, 475418.56045463786],
+  [175428.80013969325, 499072.9604685671]);
+L.Proj.imageOverlay('http://geo.flevoland.nl/arcgis/rest/services/Groen_Natuur/Agrarische_Natuur/MapServer/export?format=png24&transparent=true&f=image&bboxSR=28992&imageSR=28992&layers=show%3A0&bbox=145323.20011251318%2C475418.56045463786%2C175428.80013969325%2C499072.9604685671&size=560%2C440',
+  imageBounds);
 ```
