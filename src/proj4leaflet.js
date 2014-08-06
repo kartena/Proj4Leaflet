@@ -126,7 +126,7 @@
 				nextScale = this._scales[iZoom + 1];
 				scaleDiff = nextScale - baseScale;
 				zDiff = (zoom - iZoom);
-				return baseScale + scaleDiff * Math.pow(zDiff, nextScale / baseScale);
+				return baseScale + scaleDiff * zDiff;
 			}
 		},
 
