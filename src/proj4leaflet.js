@@ -113,7 +113,21 @@
 		},
 
 		scale: function(zoom) {
-			return this._scales[zoom];
+			var iZoom = Math.floor(zoom),
+				baseScale,
+				nextScale,
+				scaleDiff,
+				zDiff;
+			if (zoom === iZoom) {
+				return this._scales[zoom];
+			} else {
+				// Non-integer zoom, interpolate
+				baseScale = this._scales[iZoom];
+				nextScale = this._scales[iZoom + 1];
+				scaleDiff = nextScale - baseScale;
+				zDiff = (zoom - iZoom);
+				return baseScale + scaleDiff * Math.pow(zDiff, nextScale / baseScale);
+			}
 		},
 
 		getSize: function(zoom) {
