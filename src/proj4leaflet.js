@@ -2,7 +2,7 @@ L.Proj = {};
 
 L.Proj._isProj4Proj = function(a) {
 	return typeof a['projName'] !== 'undefined';
-}
+};
 
 L.Proj.Projection = L.Class.extend({
 	initialize: function(a, def) {
@@ -10,7 +10,9 @@ L.Proj.Projection = L.Class.extend({
 			this._proj = a;
 		} else {
 			var code = a;
-			Proj4js.defs[code] = def;
+            if (def) {
+                Proj4js.defs[code] = def;
+            }
 			this._proj = new Proj4js.Proj(code);
 		}
 	},
@@ -62,11 +64,11 @@ L.Proj.CRS = L.Class.extend({
 		if (this.options.scales) {
 			this.scale = function(zoom) {
 				return this.options.scales[zoom];
-			}
+			};
 		} else if (this.options.resolutions) {
 			this.scale = function(zoom) {
 				return 1 / this.options.resolutions[zoom];
-			}
+			};
 		}
 	}
 });
@@ -136,6 +138,50 @@ L.Proj.TileLayer.TMS = L.TileLayer.extend({
 		return (this.options.tileSize / this.crs.scale(zoom));
 	}
 });
+
+L.Proj.GeoJSON = L.GeoJSON.extend({
+    initialize: function (geojson, options) {
+        this._callLevel = 0;
+        L.GeoJSON.prototype.initialize.call(this, null, options);
+        this.addData(geojson);
+    },
+
+    addData: function (geojson) {
+        var crs;
+
+        if (geojson) {
+            if (geojson.crs && geojson.crs.type === 'name') {
+                crs = new L.Proj.CRS(geojson.crs.properties.name);
+            } else if (geojson.crs && geojson.crs.type) {
+                crs = new L.Proj.CRS(geojson.crs.type + ':' + geojson.crs.properties.code);
+            }
+
+            if (crs !== undefined) {
+                this.options.coordsToLatLng = function (coords) {
+                    var point = L.point(coords[0], coords[1]);
+                    return crs.projection.unproject(point);
+                };
+            }
+        }
+
+        // Base class' addData might call us recursively, but
+        // CRS shouldn't be cleared in that case, since CRS applies
+        // to the whole GeoJSON, inluding sub-features.
+        this._callLevel++;
+        try {
+            L.GeoJSON.prototype.addData.call(this, geojson);
+        } finally {
+            this._callLevel--;
+            if (this._callLevel === 0) {
+                delete this.options.coordsToLatLng;
+            }
+        }
+    }
+});
+
+L.Proj.geoJson = function (geojson, options) {
+    return new L.Proj.GeoJSON(geojson, options);
+};
 
 if (typeof module !== 'undefined') module.exports = L.Proj;
 
