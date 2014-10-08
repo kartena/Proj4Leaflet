@@ -61,16 +61,33 @@ L.Proj.CRS = L.Class.extend({
 					-1, this.options.origin[1]);
 		}
 
-		if (this.options.scales) {
-			this.scale = function(zoom) {
-				return this.options.scales[zoom];
-			};
-		} else if (this.options.resolutions) {
-			this.scale = function(zoom) {
-				return 1 / this.options.resolutions[zoom];
-			};
+		if (this.options.resolutions) {
+			this.options.scales = [];
+			for (i = 0; i < this.options.resolutions.length; i++) {
+				this.options.scales[i] = 1 / this.options.resolutions[i];
+			}
 		}
-	}
+
+		this._scales = this.options.scales;
+	},
+
+	scale: function(zoom) {
+		var iZoom = Math.floor(zoom),
+			baseScale,
+			nextScale,
+			scaleDiff,
+			zDiff;
+		if (zoom === iZoom) {
+			return this._scales[zoom];
+		} else {
+			// Non-integer zoom, interpolate
+			baseScale = this._scales[iZoom];
+			nextScale = this._scales[iZoom + 1];
+			scaleDiff = nextScale - baseScale;
+			zDiff = (zoom - iZoom);
+			return baseScale + scaleDiff * zDiff;
+		}
+	},
 });
 
 L.Proj.CRS.TMS = L.Proj.CRS.extend({
