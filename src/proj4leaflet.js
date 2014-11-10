@@ -155,15 +155,40 @@
 
 	L.Proj.GeoJSON = L.GeoJSON.extend({
 		initialize: function(geojson, options) {
-			if (geojson.crs && geojson.crs.type === 'name') {
-				var crs = new L.Proj.CRS(geojson.crs.properties.name);
-				options = options || {};
-				options.coordsToLatLng = function(coords) {
-					var point = L.point(coords[0], coords[1]);
-					return crs.projection.unproject(point);
-				};
-			}
+			this._callLevel = 0;
 			L.GeoJSON.prototype.initialize.call(this, geojson, options);
+		},
+
+		addData: function(geojson) {
+			var crs;
+
+			if (geojson) {
+				if (geojson.crs && geojson.crs.type === 'name') {
+					crs = new L.Proj.CRS(geojson.crs.properties.name);
+				} else if (geojson.crs && geojson.crs.type) {
+					crs = new L.Proj.CRS(geojson.crs.type + ':' + geojson.crs.properties.code);
+				}
+
+				if (crs !== undefined) {
+					this.options.coordsToLatLng = function(coords) {
+						var point = L.point(coords[0], coords[1]);
+						return crs.projection.unproject(point);
+					};
+				}
+			}
+
+			// Base class' addData might call us recursively, but
+			// CRS shouldn't be cleared in that case, since CRS applies
+			// to the whole GeoJSON, inluding sub-features.
+			this._callLevel++;
+			try {
+				L.GeoJSON.prototype.addData.call(this, geojson);
+			} finally {
+				this._callLevel--;
+				if (this._callLevel === 0) {
+					delete this.options.coordsToLatLng;
+				}
+			}
 		}
 	});
 
