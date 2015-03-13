@@ -14,7 +14,7 @@ var crs = new L.Proj.CRS('EPSG:3006',
 	});
 
 L.tileLayer.wms('http://geodatatest.havochvatten.se/geoservices/ows', {
-	layers: 'hav-fisketsgeografier:havet-ostersjons-delomraden',
+	layers: 'hav-bakgrundskartor:hav-grundkarta',
 	format: 'image/png',
 	maxZoom: 14,
 	minZoom: 0,
