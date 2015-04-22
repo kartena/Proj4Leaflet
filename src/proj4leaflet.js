@@ -279,7 +279,7 @@
 		initialize: function(geojson, options) {
 			this._callLevel = 0;
 			L.GeoJSON.prototype.initialize.call(this, null, options);
-			this.addData(geojson);
+			if( geojson != null) {this.addData(geojson);}
 		},
 
 		addData: function(geojson) {
