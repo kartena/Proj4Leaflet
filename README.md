@@ -4,6 +4,8 @@ Proj4Leaflet [![NPM version](https://badge.fury.io/js/proj4leaflet.png)](http://
 This [Leaflet](http://leafletjs.com) plugin adds support for using projections supported by
 [Proj4js](https://github.com/proj4js/proj4js).
 
+*For compatibility with Leaflet 1.0-beta1 use the leaflet-proj-refactor branch.*
+
 ## Features
 
 * Use tiles in any projection supported by Proj4js
