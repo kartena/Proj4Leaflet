@@ -2,5 +2,5 @@ markdown:     rdiscount
 permalink:    pretty
 pygments:     true
 paginate:     5
-url:          http://kartena.github.io/proj4leaflet/
-baseurl:      /proj4leaflet
+url:          http://kartena.github.io/Proj4Leaflet/
+baseurl:      /Proj4Leaflet
