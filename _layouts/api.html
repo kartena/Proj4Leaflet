@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width; initial-scale=1.0, maximum-scale=1">
+
+    <title>
+      {% if page.title %}{{ page.title }} &middot; {% endif %}
+      Proj4Leaflet
+    </title>
+
+    <script src="{{site.baseurl}}/lib/highlight.pack.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{site.baseurl}}/css/blueprint.screen.css">
+    <link rel="stylesheet" href="{{site.baseurl}}/css/screen.css">
+    <link rel="stylesheet" href="{{site.baseurl}}/css/github.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.css">
+    <!--[if lt IE 9]>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.ie.css">
+    <![endif]-->
+  </head>
+  <body>
+    <div class="github-fork-ribbon-wrapper right">
+        <div class="github-fork-ribbon">
+            <a href="https://github.com/perliedman/leaflet-routing-machine">Fork me on GitHub</a>
+        </div>
+    </div>
+
+    <header class="masthead">
+    </header>
+
+    <div class="content container">
+      {{ content }}
+    </div>
+
+    <script>
+      hljs.tabReplace = '    ';
+      hljs.initHighlighting();
+    </script>
+  </body>
+</html>

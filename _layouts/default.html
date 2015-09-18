@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width; initial-scale=1.0, maximum-scale=1">
+
+    <title>
+      {% if page.title %}{{ page.title }} &middot; {% endif %}
+      Proj4Leaflet - Support all projections and CRS in Leaflet
+    </title>
+
+    <!-- CSS -->
+    <link href='//fonts.googleapis.com/css?family=Rubik:400,300,600' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.css">
+    <!--[if lt IE 9]>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.1.1/gh-fork-ribbon.ie.css">
+    <![endif]-->
+    <link rel="stylesheet" href="{{site.baseurl}}/css/normalize.css">
+    <link rel="stylesheet" href="{{site.baseurl}}/css/skeleton.css">
+    <link rel="stylesheet" href="{{site.baseurl}}/css/desert.css" />
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />
+    <link rel="stylesheet" href="{{site.baseurl}}/css/site.css" />
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
+    <script src="{{site.baseurl}}/lib/proj4-compressed.js"></script>
+    <script src="{{site.baseurl}}/src/proj4leaflet.js"></script>
+    <script src="lib/run_prettify.js"></script>
+  </head>
+  <body>
+    <div class="github-fork-ribbon-wrapper right">
+        <div class="github-fork-ribbon">
+            <a href="https://github.com/perliedman/leaflet-routing-machine">Fork me on GitHub</a>
+        </div>
+    </div>
+
+<div class="section">
+  <div class="container">
+    <div class="row">
+      <div class="twelve columns">
+        <header class="hero-header">
+          <h1 class="hero-heading"><a href="{{site.baseurl}}/">Proj4Leaflet</a></h1>
+          <p>Full Projection and CRS support in Leaflet</p>
+          <a class="button button-primary" href="{{site.baseurl}}/#about">About</a>
+          <a class="button button-primary" href="{{site.baseurl}}/#getting-started">Getting Started</a>
+          <a class="button button-primary" href="{{site.baseurl}}/#examples">Examples</a>
+          <a class="button button-primary" href="{{site.baseurl}}/api">API</a>
+          <a class="button button-primary" href="https://github.com/kartena/Proj4Leaflet/releases">Download</a>
+        </header>
+      </div>
+    </div>
+    <hr>
+
+    {{ content }}
+
+    <hr>
+    Copyright &copy; 2015 <a href="https://github.com/kartena/Proj4Leaflet/graphs/contributors">Proj4Leaflet Contributors</a>, released under <a href="https://raw.githubusercontent.com/kartena/proj4leaflet/master/LICENSE">MIT License</a>.
+  </div>
+</div>
+  </body>
+</html>

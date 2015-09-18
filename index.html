@@ -1,0 +1,117 @@
+---
+layout: default
+---
+
+    <h2><a name="about"></a>About</h2>
+    <p>
+      <em>Proj4Leaflet</em> makes it possible to use projections and CRS not built into
+      <a href="http://leafletjs.com/">Leaflet</a>. All major projections are supported by
+      using the popular and well-tested <a href="http://proj4js.org/">Proj4js</a> library.
+    </p>
+    <h3>Features</h3>
+    <ul>
+      <li>Supports all commonly used projections</li>
+      <li>Extends Leaflet with full TMS support even for local projections</li>
+      <li>Makes it easy to use GeoJSON data with other projections than WGS84</li>
+    </ul>
+    <a name="getting-started"></a><h3>Getting started</h3>
+    <p>
+      <em><strong>Are you using <a href="http://leafletjs.com/2015/07/15/leaflet-1.0-beta1-released.html">Leaflet 1.0 beta 1</a> or development versions of Leaflet?</strong> Then you need to use <a href="https://github.com/kartena/Proj4Leaflet/tree/leaflet-proj-refactor">the development branch of Proj4Leaflet</a>.</em>
+    </p>
+    <p>
+      To use Proj4Leaflet, you need to include two new scripts: <code>Proj4.js</code> and <code>proj4leaflet.js</code>. Put the scripts after Leaflet has been loaded, like this:
+    </p>
+
+    <pre class="prettyprint"><code>[...]
+&lt;script src=&quot;http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;proj4.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;proj4leaflet.js&quot;&gt;&lt;/script&gt;
+[...]</code></pre>
+
+    <p>
+      If you're using Browserify, Webpack or similar, <a href="https://www.npmjs.com/package/proj4leaflet">Proj4Leaflet is available on npm</a>:
+    </p>
+    
+    <pre class="prettyprint"><code>npm install --save proj4leaflet</code></pre>
+
+    <p>
+      For basic usage, you need to create a <code>L.Proj.CRS</code> to represent the projection and CRS
+      you want to use. To do this, you need to provide a Proj4 definition of the projection. If you do
+      not already have the definition, you can find most at sites like <a href="http://epsg.io">epsg.io</a>
+      or <a href="http://spatialreference.org">spatialreference.org</a>.
+    </p>
+    <p>
+      Depending on the configuration of your tiles, you might also need additional options for the CRS. Most
+      common is to defined an origin for the tiles (where tile (0,0) is located) and the scale or resolution
+      to use for zoom levels.
+    </p>
+    <p>
+      An example:
+    </p>
+    <pre class="prettyprint"><code>// SWEREF99 TM (EPSG:3006) with map's pixel origin at SWEREF99 TM coordinate (0, 0)
+var crs = new L.Proj.CRS('EPSG:3006',
+  '+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
+  {
+    resolutions: [
+      8192, 4096, 2048, 1024, 512, 256, 128
+    ],
+    origin: [0, 0]
+  })</code></pre>
+    <p>
+      Finally, instantiate a map with the newly created CRS like this:
+    </p>
+    <pre class="prettyprint"><code>var map = new L.Map('map', {
+    crs: crs
+  });
+
+L.tileLayer('http://api.geosition.com/tile/osm-bright-3006/{z}/{x}/{y}.png', {
+  maxZoom: crs.options.resolutions.length,
+  minZoom: 0,
+  continuousWorld: true,
+  attribution: 'Map data &copy; &lt;a href="http://www.openstreetmap.org/copyright"&gt;OpenStreetMap contributors&lt;/a&gt;, Imagery &copy; 2013 &lt;a href="http://www.kartena.se/"&gt;Kartena&lt;/a&gt;'
+}).addTo(map);</code></pre>
+    <p>
+      Note the use of the option <code>continuousWorld</code> for the tile layer, which tells Leaflet that the tiles should not be wrapped the same way they should for its default projection.
+    </p>
+    <p>An example of the result:</p>
+    <div class="row">
+      <div class="twelve columns">
+        <a name="example"></a>
+        <div id="map" class="map"></div>
+      </div>
+      <div class="one-half column">
+      </div>
+    </div>
+    <script src="{{site.baseurl}}/examples/osm-tiled/script.js"></script>
+    <p>
+      Tiling in projections other than spherical mercator (the projection used in Leaflet by default) is
+      a complex topic, and standards are often lacking. To get a better grasp of the concepts involved, you
+      might want to refer to <a href="http://www.liedman.net/tiled-maps/">The Hitchhiker's Guide To Tiles Maps</a>.
+    </p>
+
+    <h2><a name="examples"></a>Examples</h2>
+    <p>
+      A couple of small examples showing of different features of Proj4Leaflet. Fire up your browser's debugger
+      to see the code used.
+    </p>
+    <p>
+      For detailed docs, check out the <a href="api/">API</a>.
+    </p>
+    <ul>
+      <li>
+        <a href="examples/osm-tiled/">OSM tiling schema example</a> - the example shown above, with EPSG:3006
+        with tiles using <a href="http://www.liedman.net/tiled-maps/#google-maps-openstreetmap-slippy-map-tile-naming">OpenStreetMap's tiling scheme</a>
+      </li>
+      <li>
+        <a href="examples/tms-tiled/">TMS tiling schema example</a> using EPSG:5181
+        with tiles using <a href="http://www.liedman.net/tiled-maps/#tms">TMS tiling scheme</a>
+      </li>
+      <li>
+        <a href="examples/wms/">WMS example</a> using EPSG:3006
+        with tiles from a WMS service
+      </li>
+      <li>
+        <a href="examples/geojson-crs/">GeoJSON example</a> displaying a GeoJSON with coordinates in EPSG:26915
+        on a Leaflet map with spherical mercator projection
+      </li>
+    </ul>
