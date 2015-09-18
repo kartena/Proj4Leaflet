@@ -16,6 +16,7 @@ title: API
       <li><a href="#l-proj-projection">L.Proj.Projection</a></li>
       <li><a href="#l-proj-tilelayer-tms">L.Proj.TileLayer.TMS</a></li>
       <li><a href="#l-proj-geojson">L.Proj.GeoJSON</a></li>
+      <li><a href="#l-proj-imageoverlay">L.Proj.ImageOverlay</a></li>
     </ul>
   </div>
 </div>
