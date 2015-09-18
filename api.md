@@ -163,7 +163,7 @@ Constructor                       | Description
 ----------------------------------|----------------------------------------------------
 `new L.Proj.GeoJSON(<Object> geojson?, <`[`GeoJSON options`](http://leafletjs.com/reference.html#geojson-options)`> options) | Creates a GeoJSON layer with CRS support
 
-## L.Proj.ImageOverlay
+## <a name="l-proj-imageoverlay"></a> L.Proj.ImageOverlay
 
 Works like [`L.ImageOverlay`](http://leafletjs.com/reference.html#imageoverlay), but accepts bounds in the map's projected coordinate system instead of latitudes and longitudes. This is useful when the projected coordinate systems axis do not align with the latitude and longitudes, which results in distortion with the default image overlay in Leaflet.
 
