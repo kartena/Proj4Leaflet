@@ -27,7 +27,7 @@ describe('L.Proj.CRS', function() {
 			'+towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +no_defs');
 
 		var pp = crs.project(new L.LatLng(55.723337, 14.194313));
-		expect(pp.x).toBeCloseTo(1398776, 0)
+		expect(pp.x).toBeCloseTo(1398776, 0);
 		expect(pp.y).toBeCloseTo(6178304, 0);
 	});
 
@@ -134,5 +134,21 @@ describe('L.Proj.CRS', function() {
 			expect(bounds.max.y).toBe(5000 / resolutions[i]);
 			worldSize *= 2;
 		}
+	});
+	it('convert zoom to scale and viceversa and return the same values', function () {
+		 var crs = new L.Proj.CRS('EPSG:3006',
+				'+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
+		{
+			resolutions: [
+				8192, 4096, 2048, 1024, 512, 256, 128,
+				64, 32, 16, 8, 4, 2, 1, 0.5
+			]
+		});
+		
+		expect(crs.zoom(crs.scale(8.9578457485))).toBe(8.9578457485);
+		expect(crs.zoom(crs.scale(8))).toBe(8);
+		expect(crs.zoom(crs.scale(1/8191))).toBeCloseTo(1/8191, 6);
+		expect(crs.zoom(crs.scale(0.5))).toBe(0.5);
+		expect(crs.zoom(crs.scale(0.51))).toBe(0.51);
 	});
 });
