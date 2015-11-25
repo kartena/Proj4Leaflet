@@ -37,6 +37,6 @@
   },
   "dependencies": {
     "leaflet": "~0.7.0",
-    "proj4": "~2.0.0"
+    "proj4": "~2.1"
   }
 }
