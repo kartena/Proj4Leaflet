@@ -155,6 +155,11 @@
 
 	L.Proj.GeoJSON = L.GeoJSON.extend({
 		initialize: function(geojson, options) {
+			options = this.addCRS(geojson, options);
+			L.GeoJSON.prototype.initialize.call(this, geojson, options);
+		},
+		
+		addCRS: function(geojson, options) {
 			if (geojson.crs && geojson.crs.type === 'name') {
 				var crs = new L.Proj.CRS(geojson.crs.properties.name);
 				options = options || {};
@@ -163,7 +168,7 @@
 					return crs.projection.unproject(point);
 				};
 			}
-			L.GeoJSON.prototype.initialize.call(this, geojson, options);
+			return options;
 		}
 	});
 
