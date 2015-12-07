@@ -155,7 +155,7 @@
 
 	L.Proj.GeoJSON = L.GeoJSON.extend({
 		initialize: function(geojson, options) {
-			if (geojson.crs && geojson.crs.type === 'name') {
+			if (geojson && geojson.crs && geojson.crs.type === 'name') {
 				var crs = new L.Proj.CRS(geojson.crs.properties.name);
 				options = options || {};
 				options.coordsToLatLng = function(coords) {
