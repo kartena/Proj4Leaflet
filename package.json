@@ -31,7 +31,7 @@
     "Mathieu Leplatre (https://github.com/leplatrem)",
     "fnicollet (https://github.com/fnicollet)"
   ],
-  "license": "MIT",
+  "license": "BSD-2-Clause",
   "bugs": {
     "url": "https://github.com/kartena/Proj4Leaflet/issues"
   },
