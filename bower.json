@@ -17,7 +17,7 @@
     "Leaflet",
     "Project4"
   ],
-  "license": "MIT",
+  "license": "BSD-2-Clause",
   "ignore": [
     "**/.*",
     "node_modules",
