@@ -39,5 +39,5 @@
   "dependencies": {
     "leaflet": "^1.0.0-rc.3",
     "proj4": "^2.3.14"
-  },
+  }
 }
