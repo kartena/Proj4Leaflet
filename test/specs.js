@@ -135,7 +135,8 @@ describe('L.Proj.CRS', function() {
 			worldSize *= 2;
 		}
 	});
-	it('convert zoom to scale and viceversa and return the same values', function () {
+
+	it('converts zoom to scale and vice versa and returns the same values', function () {
 		 var crs = new L.Proj.CRS('EPSG:3006',
 				'+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
 		{
@@ -150,5 +151,14 @@ describe('L.Proj.CRS', function() {
 		expect(crs.zoom(crs.scale(1/8191))).toBeCloseTo(1/8191, 6);
 		expect(crs.zoom(crs.scale(0.5))).toBe(0.5);
 		expect(crs.zoom(crs.scale(0.51))).toBe(0.51);
+	});
+
+	it('converts scale to zoom and returns Infinity if the scale passed in is bigger than maximum scale', function () {
+		var crs = new L.Proj.CRS('EPSG:3006', '', {
+			scales: [1, 2, 3]
+		});
+
+		expect(crs.zoom(4)).toBe(Infinity);
+		expect(crs.zoom(Infinity)).toBe(Infinity);
 	});
 });
