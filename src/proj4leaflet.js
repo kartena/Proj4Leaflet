@@ -126,9 +126,10 @@
 		},
 
 		zoom: function(scale) {
-			// Find closest number in this._scales, down 
+			// Find closest number in this._scales, down
 			var downScale = this._closestElement(this._scales, scale),
 				downZoom = this._scales.indexOf(downScale),
+				nextScale,
 				nextZoom,
 				scaleDiff;
 			// Check if scale is downScale => return array index
@@ -137,7 +138,11 @@
 			}
 			// Interpolate
 			nextZoom = downZoom + 1;
-			scaleDiff = this._scales[nextZoom] - downScale;
+			nextScale = this._scales[nextZoom];
+			if (nextScale === undefined) {
+				return Infinity;
+			}
+			scaleDiff = nextScale - downScale;
 			return (scale - downScale) / scaleDiff + downZoom;
 		},
 
