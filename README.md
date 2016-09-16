@@ -53,30 +53,6 @@ var crs = new L.Proj.CRS('EPSG:3006',
 );
 ```
 
-To use a [TMS](http://wiki.osgeo.org/wiki/Tile_Map_Service_Specification) tile server, you must use the `L.Proj.CRS.TMS` 
-class as your CRS. Also, the `tms` option must be set on the `L.TileLayer` instance.
-
-```javascript
-// EPSG:102012 served by TMS with bounds (-5401501.0, 4065283.0, 4402101.0, 39905283.0)
-new L.Proj.CRS.TMS('EPSG:102012',
-    '+proj=lcc +lat_1=30 +lat_2=62 +lat_0=0 +lon_0=105 +x_0=0 +y_0=0 ' +
-    '+ellps=WGS84 +datum=WGS84 +units=m +no_defs',
-    [-5401501.0, 4065283.0, 4402101.0, 39905283.0],
-    {
-        resolutions: [
-           140000.0000000000,
-            70000.0000000000,
-            35000.0000000000,
-            17500.0000000000
-        ]
-    }
-);
-
-L.tileLayer('http://tile.example.com/example/{z}/{x}/{y}.png', {tms: true}).addTo(map);
-```
-
-(See the reference for `L.CRS.TMS` for details on TMS and Leaflet versions before 0.7)
-
 ## Proj4js compatibility notice
 Proj4js has breaking changes introduced after version 1.1.0. The current version of Proj4Leaflet
 uses Proj4js 2.3.14 or later. If you for some reason need Proj4js version 1.1.0 compatibility, you can
@@ -128,87 +104,6 @@ L.Proj.CRS(code, proj4def, options)
   * `bounds` - an [L.Bounds](http://leafletjs.com/reference-1.0.0.html#bounds) providing the bounds of CRS in projected 
   coordinates. If defined, Proj4Leaflet will use this in the `getSize` method, otherwise reverting to Leaflet's 
   default size for Spherical Mercator.
-
-### L.Proj.CRS.TMS
-CRS implementation to work with a Proj4 projection that will be used together with a [TMS](http://en.wikipedia.org/wiki/Tile_Map_Service) 
-tile server. Since TMS has its y axis in the opposite direction of Leaflet (and OpenStreetMap/Google Maps), 
-this requires some extra work.
-
-**Note:** If you use TMS and Leaflet _before_ version 0.7, you _must_ use `L.Proj.TileLayerTMS` instead of a standard `L.TileLayer`; 
-the standard TileLayer before 0.7 couldn't handle other projections than Spherical Mercator together with TMS.
-
-#### Usage example
-
-```javascript
-var map = new L.Map('map', {
-    crs: new L.Proj.CRS.TMS('EPSG:102012',
-        '+proj=lcc +lat_1=30 +lat_2=62 +lat_0=0 +lon_0=105 +x_0=0 +y_0=0 ' +
-        '+ellps=WGS84 +datum=WGS84 +units=m +no_defs',
-        [-5401501.0, 4065283.0, 4402101.0, 39905283.0],
-        {
-            resolutions: [
-               140000.0000000000,
-                70000.0000000000,
-                35000.0000000000,
-                17500.0000000000
-            ]
-        }
-    ),
-    continuousWorld: true,
-    worldCopyJump: false
-});
-```
-
-#### Constructor
-
-```javascript
-L.Proj.CRS.TMS(code, proj4def, projectedBounds, options)
-```
-
-* `code` is the projection's SRS code (only used internally by the Proj4js library)
-* `proj4def` is the Proj4 definition for the projection to use
-* `projectedBounds` are the bounds of the TMS tile grid in projected coordinates. The bounds need to be properly specified 
-and align to the grid on all provided zoom levels, or markers and/or tiles will not align properly with the corresponding 
-WGS84 coordinate.
-* `options` is an options object with the same parameters as `L.Proj.CRS`. It also accepts one extra option.
-  * `tileSize` - sets the tile size (in pixels) which the CRS should align to; in case the projected bounds do not align 
-  with the tile grid, CRS will align it using this tile size. Default is 256.
-
-### L.Proj.TileLayer.TMS
-
-*Deprecated since version 0.7, since Leaflet 0.7 does not need this class.*
-
-Extends [L.TileLayer](http://leafletjs.com/reference-1.0.0.html#tilelayer) to support TMS when working with Proj4 projections. 
-Note that for Leaflet versions before 0.7, `L.TileLayer` will _not_ work with other projections than `EPSG:3857` if the 
-option `tms` is enabled.
-
-#### Usage example
-
-```javascript
-var crs = new L.Proj.CRS.TMS(...),
-    map = new L.Map('map', {
-        crs: crs,
-        continuousWorld: true,
-        worldCopyJump: false
-    }),
-
-map.addLayer(new L.Proj.TileLayer.TMS('http://{s}.my-tms-server/{z}/{x}/{y}.png', crs, {
-    maxZoom: 17,
-    minZoom: 0,
-    continuousWorld: true,
-    attribution: 'Attribution'
-}));
-```
-
-#### Constructor
-
-```javascript
-L.Proj.TileLayer.TMS(tileUrl, crs, options)
-```
-
-* `tileUrl` is the URL template to use for tiles, see [L.TileLayer](http://leafletjs.com/reference-1.0.0.html#tilelayer)
-* `crs` is the L.Proj.CRS.TMS ICRS object used for this layer
-* `options` are the options for this layer, see [L.TileLayer](http://leafletjs.com/reference-1.0.0.html#tilelayer)
 
 ### L.Proj.GeoJSON
 
