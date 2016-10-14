@@ -201,5 +201,58 @@
 		return new L.Proj.GeoJSON(geojson, options);
 	};
 
+	L.Proj.ImageOverlay = L.ImageOverlay.extend({
+		initialize: function (url, bounds, options) {
+			L.ImageOverlay.prototype.initialize.call(this, url, null, options);
+			this._projectedBounds = bounds;
+		},
+
+		// Danger ahead: Overriding internal methods in Leaflet.
+		// Decided to do this rather than making a copy of L.ImageOverlay
+		// and doing very tiny modifications to it.
+		// Future will tell if this was wise or not.
+		_animateZoom: function (event) {
+			var scale = this._map.getZoomScale(event.zoom);
+			var northWest = L.point(this._projectedBounds.min.x, this._projectedBounds.max.y);
+			var offset = this._projectedToNewLayerPoint(northWest, event.zoom, event.center);
+
+			L.DomUtil.setTransform(this._image, offset, scale);
+		},
+
+		_reset: function () {
+			var zoom = this._map.getZoom();
+			var pixelOrigin = this._map.getPixelOrigin();
+			var bounds = L.bounds(
+				this._transform(this._projectedBounds.min, zoom)._subtract(pixelOrigin),
+				this._transform(this._projectedBounds.max, zoom)._subtract(pixelOrigin)
+			);
+			var size = bounds.getSize();
+
+			L.DomUtil.setPosition(this._image, bounds.min);
+			this._image.style.width = size.x + 'px';
+			this._image.style.height = size.y + 'px';
+		},
+
+		_projectedToNewLayerPoint: function (point, zoom, center) {
+			var viewHalf = this._map.getSize()._divideBy(2);
+			var newTopLeft = this._map.project(center, zoom)._subtract(viewHalf)._round();
+			var topLeft = newTopLeft.add(this._map._getMapPanePos());
+
+			return this._transform(point, zoom)._subtract(topLeft);
+		},
+
+		_transform: function (point, zoom) {
+			var crs = this._map.options.crs;
+			var transformation = crs.transformation;
+			var scale = crs.scale(zoom);
+
+			return transformation.transform(point, scale);
+		}
+	});
+
+	L.Proj.imageOverlay = function (url, bounds, options) {
+		return new L.Proj.ImageOverlay(url, bounds, options);
+	};
+
 	return L.Proj;
 }));
