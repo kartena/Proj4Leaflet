@@ -5,14 +5,14 @@ This [Leaflet](http://leafletjs.com) plugin adds support for using projections s
 
 _This branch uses Leaflet 1.0.0-rc.3, for compatibility with Leaflet 0.7.x use the [master](https://github.com/kartena/Proj4Leaflet/tree/master) branch._
 
-Leaflet comes with built in support for tiles in [Spherical Mercator](http://wiki.openstreetmap.org/wiki/EPSG:3857). 
+Leaflet comes with built in support for tiles in [Spherical Mercator](http://wiki.openstreetmap.org/wiki/EPSG:3857) and [a few other projections](http://leafletjs.com/reference-1.0.0.html#crs-l-crs-epsg3395). 
 If you need support for tile layers in other projections, the Proj4Leaflet plugin lets you use tiles in any projection 
 supported by Proj4js, which means support for just about any projection commonly used.
 
 Proj4Leaflet also adds support for GeoJSON in any projection, while Leaflet by itself assumes GeoJSON to always 
 use WGS84 as its projection.
 
-Image overlays with bounds set from projected coordinates rather than `LatLngs` are also supported by Proj4Leaflet plugin.
+Image overlays with bounds set from projected coordinates rather than `LatLng`s are also supported by Proj4Leaflet plugin.
 
 For more details, see this blog post on [tiling and projections](http://blog.kartena.se/local-projections-in-a-world-of-spherical-mercator/).
 
