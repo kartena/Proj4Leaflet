@@ -36,7 +36,7 @@
   "bugs": {
     "url": "https://github.com/kartena/Proj4Leaflet/issues"
   },
-  "dependencies": {
+  "peerDependencies": {
     "leaflet": "^1.0.0-rc.3",
     "proj4": "^2.3.14"
   }
