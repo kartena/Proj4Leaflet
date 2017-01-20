@@ -25,7 +25,7 @@ var	map = new L.Map('map', {
 	worldCopyJump: false
 });
 
-var tileUrl = 'http://maps.aucklandcouncil.govt.nz/ArcGIS/rest/services/Aerials/MapServer/tile/{z}/{y}/{x}',
+var tileUrl = 'https://maps.aucklandcouncil.govt.nz/ArcGIS/rest/services/Aerials/MapServer/tile/{z}/{y}/{x}',
 	attrib = 'Auckland City Council &copy; 2012',
 	tilelayer = new L.TileLayer(tileUrl, {
 		maxZoom: 12,

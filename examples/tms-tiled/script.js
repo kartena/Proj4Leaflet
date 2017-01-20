@@ -11,7 +11,7 @@ var crs = new L.Proj.CRS.TMS(
 		zoomControl: true
 	});
 
-new L.TileLayer('http://i{s}.maps.daum-img.net/map/image/G03/i/1.20/L{z}/{y}/{x}.png', {
+new L.TileLayer('https://i{s}.maps.daum-img.net/map/image/G03/i/1.20/L{z}/{y}/{x}.png', {
 	maxZoom: 14,
 	minZoom: 0,
 	zoomReverse: true,

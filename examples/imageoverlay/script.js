@@ -10,10 +10,10 @@ var RD2 = new L.Proj.CRS.TMS(
 
 var map = L.map('map', {crs:RD2}).setView([52.479, 5.24545], 7);
 
-L.tileLayer('http://geodata.nationaalgeoregister.nl/tms/1.0.0/brtachtergrondkaart/{z}/{x}/{y}.png', {
+L.tileLayer('https://geodata.nationaalgeoregister.nl/tms/1.0.0/brtachtergrondkaart/{z}/{x}/{y}.png', {
     tms: true
 }).addTo(map);
 
 
-L.Proj.imageOverlay('http://geo.flevoland.nl/arcgis/rest/services/Groen_Natuur/Agrarische_Natuur/MapServer/export?format=png24&transparent=true&f=image&bboxSR=28992&imageSR=28992&layers=show%3A0&bbox=145323.20011251318%2C475418.56045463786%2C175428.80013969325%2C499072.9604685671&size=560%2C440',
+L.Proj.imageOverlay('https://geo.flevoland.nl/arcgis/rest/services/Groen_Natuur/Agrarische_Natuur/MapServer/export?format=png24&transparent=true&f=image&bboxSR=28992&imageSR=28992&layers=show%3A0&bbox=145323.20011251318%2C475418.56045463786%2C175428.80013969325%2C499072.9604685671&size=560%2C440',
 	L.bounds([145323.20011251318, 475418.56045463786], [175428.80013969325, 499072.9604685671])).addTo(map);
