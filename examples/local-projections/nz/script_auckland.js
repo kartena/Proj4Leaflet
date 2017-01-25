@@ -23,13 +23,8 @@ var	map = new L.Map('map', {
 	crs: crs,
 });
 
-<<<<<<< HEAD
-var tileUrl = 'http://maps.aucklandcouncil.govt.nz/ArcGIS/rest/services/Aerials/MapServer/tile/{z}/{y}/{x}',
-	attrib = 'Auckland City Council &copy;',
-=======
 var tileUrl = 'https://maps.aucklandcouncil.govt.nz/ArcGIS/rest/services/Aerials/MapServer/tile/{z}/{y}/{x}',
 	attrib = 'Auckland City Council &copy; 2012',
->>>>>>> 5aef9d20cb45e1387278b5c7fc3977278c6d39e7
 	tilelayer = new L.TileLayer(tileUrl, {
 		maxZoom: 12,
 		minZoom: 0,
