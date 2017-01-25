@@ -8,7 +8,7 @@
     "example": "examples"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha-phantomjs test/mocha.html"
   },
   "repository": {
     "type": "git",
@@ -37,7 +37,10 @@
     "url": "https://github.com/kartena/Proj4Leaflet/issues"
   },
   "dependencies": {
-    "leaflet": "^1.0.3",
     "proj4": "^2.3.14"
+  },
+  "devDependencies": {
+    "mocha": "^3.2.0",
+    "mocha-phantomjs": "^4.1.0"
   }
 }
