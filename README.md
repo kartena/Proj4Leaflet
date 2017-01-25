@@ -3,8 +3,6 @@
 This [Leaflet](http://leafletjs.com) plugin adds support for using projections supported by
 [Proj4js](https://github.com/proj4js/proj4js).
 
-_This branch uses Leaflet 1.0.0-rc.3, for compatibility with Leaflet 0.7.x use the [master](https://github.com/kartena/Proj4Leaflet/tree/master) branch._
-
 Leaflet comes with built in support for tiles in [Spherical Mercator](http://wiki.openstreetmap.org/wiki/EPSG:3857) and [a few other projections](http://leafletjs.com/reference-1.0.0.html#crs-l-crs-epsg3395). 
 If you need support for tile layers in other projections, the Proj4Leaflet plugin lets you use tiles in any projection 
 supported by Proj4js, which means support for just about any projection commonly used.

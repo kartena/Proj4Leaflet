@@ -105,6 +105,7 @@
 			}
 
 			this.infinite = !this.options.bounds;
+
 		},
 
 		scale: function(zoom) {

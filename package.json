@@ -32,7 +32,7 @@
     "fnicollet (https://github.com/fnicollet)",
     "Semone Kallin Thander (https://github.com/semone/)"
   ],
-  "license": "MIT",
+  "license": "BSD-2-Clause",
   "bugs": {
     "url": "https://github.com/kartena/Proj4Leaflet/issues"
   },
