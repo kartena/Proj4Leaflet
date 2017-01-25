@@ -17,7 +17,7 @@ new L.TileLayer('http://i{s}.maps.daum-img.net/map/image/G03/i/1.20/L{z}/{y}/{x}
 	zoomReverse: true,
 	subdomains: '0123',
 	continuousWorld: true,
-	attribution: 'ⓒ 2012 Daum',
+	attribution: 'ⓒ Daum',
 	tms: true
 }).addTo(map);
 

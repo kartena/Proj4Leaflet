@@ -32,7 +32,7 @@ Additional services listed at http://wellington.govt.nz/~/media/maps/gis/ogc-ser
 */
 
 var tileUrl = 'http://gis.wcc.govt.nz/arcgis/rest/services/Basemap/Aerial_Photo/MapServer/tile/{z}/{y}/{x}',
-	attrib = 'Wellington City Council &copy; 2012',
+	attrib = 'Wellington City Council &copy;',
 	tilelayer = new L.TileLayer(tileUrl, {
 		maxZoom: 10,
 		minZoom: 0,

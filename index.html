@@ -72,7 +72,7 @@ L.tileLayer('http://api.geosition.com/tile/osm-bright-3006/{z}/{x}/{y}.png', {
   maxZoom: crs.options.resolutions.length,
   minZoom: 0,
   continuousWorld: true,
-  attribution: 'Map data &copy; &lt;a href="http://www.openstreetmap.org/copyright"&gt;OpenStreetMap contributors&lt;/a&gt;, Imagery &copy; 2013 &lt;a href="http://www.kartena.se/"&gt;Kartena&lt;/a&gt;'
+  attribution: 'Map data &copy; &lt;a href="http://www.openstreetmap.org/copyright"&gt;OpenStreetMap contributors&lt;/a&gt;, Imagery &copy; &lt;a href="http://www.kartena.se/"&gt;Kartena&lt;/a&gt;'
 }).addTo(map);</code></pre>
     <p>
       Note the use of the option <code>continuousWorld</code> for the tile layer, which tells Leaflet that the tiles should not be wrapped the same way they should for its default projection.
