@@ -1,3 +1,4 @@
+
 describe('L.Proj.Projection', function() {
 	it('can create an instance from a SRS code and proj4 def', function() {
 		new L.Proj.Projection(
@@ -16,7 +17,7 @@ describe('L.Proj.CRS', function() {
 			'+y_0=0.0 +proj=tmerc +ellps=bessel +units=m ' +
 			'+towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +no_defs');
 
-		expect(crs.code).toBe('EPSG:2400');
+		expect(crs.code).to.be('EPSG:2400');
 	});
 
 	it('can project a coordinate to a point in the defined SRS', function() {
@@ -27,8 +28,8 @@ describe('L.Proj.CRS', function() {
 			'+towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +no_defs');
 
 		var pp = crs.project(new L.LatLng(55.723337, 14.194313));
-		expect(pp.x).toBeCloseTo(1398776, 0);
-		expect(pp.y).toBeCloseTo(6178304, 0);
+		expect(pp.x).to.be.within(1398775, 1398777);
+		expect(pp.y).to.be.within(6178303, 6178305);
 	});
 
 	it('has a default transformation that is [1, 0, -1, 0]', function() {
@@ -39,10 +40,10 @@ describe('L.Proj.CRS', function() {
 			pp = crs.latLngToPoint(ll, 0),
 			up = crs.pointToLatLng(pp, 0);
 
-		expect(pp.x).toBe(ll.lng);
-		expect(pp.y).toBe(-ll.lat);
-		expect(up.lat).toBe(ll.lng);
-		expect(up.lng).toBe(ll.lat);
+		expect(pp.x).to.be(ll.lng);
+		expect(pp.y).to.be(-ll.lat);
+		expect(up.lat).to.be(ll.lng);
+		expect(up.lng).to.be(ll.lat);
 	});
 
 	it('uses provided zoom level scales', function() {
@@ -56,10 +57,11 @@ describe('L.Proj.CRS', function() {
 				up = crs.pointToLatLng(pp, i),
 				s = i + 1;
 
-			expect(pp.x).toBeCloseTo(ll.lng * s, 6);
-			expect(pp.y).toBeCloseTo(-ll.lat * s, 6);
-			expect(up.lat).toBeCloseTo(ll.lng, 6);
-			expect(up.lng).toBeCloseTo(ll.lat, 6);
+			expect(pp.x).to.be(ll.lng * s);
+			expect(pp.y).to.be(-ll.lat * s);
+			expect(up.lat).to.be(ll.lng);
+			expect(up.lng).to.be(ll.lat);
+
 		}
 	});
 
@@ -73,11 +75,11 @@ describe('L.Proj.CRS', function() {
 			var pp = crs.latLngToPoint(ll, i),
 				up = crs.pointToLatLng(pp, i),
 				s = i + 1;
+			expect(pp.x).to.be(ll.lng * s);
+			expect(pp.y).to.be(-ll.lat * s);
+			expect(up.lat).to.be(ll.lng);
+			expect(up.lng).to.be(ll.lat);
 
-			expect(pp.x).toBeCloseTo(ll.lng * s, 6);
-			expect(pp.y).toBeCloseTo(-ll.lat * s, 6);
-			expect(up.lat).toBeCloseTo(ll.lng, 6);
-			expect(up.lng).toBeCloseTo(ll.lat, 6);
 		}
 	});
 
@@ -91,10 +93,11 @@ describe('L.Proj.CRS', function() {
 			pp = crs.latLngToPoint(ll, 0),
 			up = crs.pointToLatLng(pp, 0);
 
-		expect(pp.x).toBeCloseTo(ll.lng - 10, 6);
-		expect(pp.y).toBeCloseTo(-ll.lat + 10, 6);
-		expect(up.lat).toBeCloseTo(ll.lng, 6);
-		expect(up.lng).toBeCloseTo(ll.lat, 6);
+		expect(pp.x.toPrecision(6)).to.be((ll.lng - 10).toPrecision(6));
+		expect(pp.y.toPrecision(6)).to.be((-ll.lat + 10).toPrecision(6));
+		expect(up.lat.toPrecision(6)).to.be(ll.lng.toPrecision(6));
+		expect(up.lng.toPrecision(6)).to.be(ll.lat.toPrecision(6));
+
 	});
 
 	it('accepts custom transformation', function() {
@@ -107,10 +110,10 @@ describe('L.Proj.CRS', function() {
 			pp = crs.latLngToPoint(ll, 0),
 			up = crs.pointToLatLng(pp, 0);
 
-		expect(pp.x).toBe(ll.lng * 3);
-		expect(pp.y).toBe(ll.lat - 5);
-		expect(up.lat).toBe(ll.lng);
-		expect(up.lng).toBe(ll.lat);
+		expect(pp.x).to.be(ll.lng * 3);
+		expect(pp.y).to.be(ll.lat - 5);
+		expect(up.lat).to.be(ll.lng);
+		expect(up.lng).to.be(ll.lat);
 	});
 
 	it('size from bounds', function() {
@@ -130,8 +133,8 @@ describe('L.Proj.CRS', function() {
 
 		for (i = 0; i < resolutions.length; i++) {
 			bounds = crs.getProjectedBounds(i);
-			expect(bounds.max.x).toBe(4000 / resolutions[i]);
-			expect(bounds.max.y).toBe(5000 / resolutions[i]);
+			expect(bounds.max.x).to.be(4000 / resolutions[i]);
+			expect(bounds.max.y).to.be(5000 / resolutions[i]);
 			worldSize *= 2;
 		}
 	});
@@ -146,11 +149,11 @@ describe('L.Proj.CRS', function() {
 			]
 		});
 		
-		expect(crs.zoom(crs.scale(8.9578457485))).toBe(8.9578457485);
-		expect(crs.zoom(crs.scale(8))).toBe(8);
-		expect(crs.zoom(crs.scale(1/8191))).toBeCloseTo(1/8191, 6);
-		expect(crs.zoom(crs.scale(0.5))).toBe(0.5);
-		expect(crs.zoom(crs.scale(0.51))).toBe(0.51);
+		expect(crs.zoom(crs.scale(8.9578457485))).to.be(8.9578457485);
+		expect(crs.zoom(crs.scale(8))).to.be(8);
+		expect(crs.zoom(crs.scale(1/8191)).toPrecision(6)).to.be((1/8191).toPrecision(6));
+		expect(crs.zoom(crs.scale(0.5))).to.be(0.5);
+		expect(crs.zoom(crs.scale(0.51))).to.be(0.51);
 	});
 
 	it('converts scale to zoom and returns Infinity if the scale passed in is bigger than maximum scale', function () {
@@ -158,8 +161,8 @@ describe('L.Proj.CRS', function() {
 			scales: [1, 2, 3]
 		});
 
-		expect(crs.zoom(4)).toBe(Infinity);
-		expect(crs.zoom(Infinity)).toBe(Infinity);
+		expect(crs.zoom(4)).to.be(Infinity);
+		expect(crs.zoom(Infinity)).to.be(Infinity);
 	});
 
 	it('tests that distance works (L.CRS.Earth.Distance)', function testDistance() {
@@ -171,11 +174,11 @@ describe('L.Proj.CRS', function() {
 			crs.distance(
 				crs.unproject(new L.Point(218128, 6126002)), 
 				crs.unproject(new L.Point(218128, 6126003))))
-				.toBeCloseTo(1);
+				.to.be.within(0.9, 1);
 		
 		expect(
 			crs.distance(new L.LatLng(57.777, 11.9), new L.LatLng(57.778, 11.9)))
-			.toBeCloseTo(111.19);
+			.to.be.within(111.194, 111.195);
 
 	});
 });
