@@ -161,4 +161,21 @@ describe('L.Proj.CRS', function() {
 		expect(crs.zoom(4)).toBe(Infinity);
 		expect(crs.zoom(Infinity)).toBe(Infinity);
 	});
+
+	it('tests that distance works (L.CRS.Earth.Distance)', function testDistance() {
+		var crs = new L.Proj.CRS('EPSG:3006', '+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs', {
+			scales: [1, 2, 3]
+		});
+		
+		expect(
+			crs.distance(
+				crs.unproject(new L.Point(218128, 6126002)), 
+				crs.unproject(new L.Point(218128, 6126003))))
+				.toBeCloseTo(1);
+		
+		expect(
+			crs.distance(new L.LatLng(57.777, 11.9), new L.LatLng(57.778, 11.9)))
+			.toBeCloseTo(111.19);
+
+	});
 });

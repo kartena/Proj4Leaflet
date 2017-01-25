@@ -146,6 +146,10 @@
 			return (scale - downScale) / scaleDiff + downZoom;
 		},
 
+		distance: L.CRS.Earth.distance,
+
+		R: L.CRS.Earth.R,
+
 		/* Get the closest lowest element in an array */
 		_closestElement: function(array, element) {
 			var low;
