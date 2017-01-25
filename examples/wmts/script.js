@@ -24,7 +24,7 @@ new L.TileLayer('https://api.lantmateriet.se/open/topowebb-ccby/v1/wmts/token/'+
 	maxZoom: 9,
 	minZoom: 0,
 	continuousWorld: true,
-	attribution: '&copy; <a href="http://www.lantmateriet.se/en/">Lantmäteriet</a> Topografisk Webbkarta Visning, CCB',
+	attribution: '&copy; <a href="https://www.lantmateriet.se/en/">Lantmäteriet</a> Topografisk Webbkarta Visning, CCB',
 }).addTo(map);
 //Set view over Stockholm Södermalm
 map.setView([59.3167, 18.0667], 7);

@@ -1,11 +1,15 @@
 var map = L.map('map').setView([44.97,-93.24], 11);
 
-// OSM Tiles
+// MapQuest OSM Tiles
+
+// Attribution (https://gist.github.com/mourner/1804938)
+var osmAttr = 'Map data &copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+    mqTilesAttr = 'Tiles &copy; <a href="https://www.mapquest.com/"" target="_blank">MapQuest</a> <img src="https://developer.mapquest.com/content/osm/mq_logo.png" />';
 
 L.tileLayer(
-  'http://tile.openstreetmap.org/{z}/{x}/{y}.png', 
+  'https://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png',
   {
-      attribution: 'Data by <a href="http://openstreetmap.org">OpenStreetMap contributors</a>'
+      attribution: 'Data by <a href="https://openstreetmap.org">OpenStreetMap contributors</a>'
   }
 )
 .addTo(map);

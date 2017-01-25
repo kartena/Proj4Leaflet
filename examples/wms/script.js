@@ -11,7 +11,7 @@ var crs = new L.Proj.CRS('EPSG:3006',
 		crs: crs,
 	});
 
-L.tileLayer.wms('http://geodatatest.havochvatten.se/geoservices/ows', {
+L.tileLayer.wms('https://geodatatest.havochvatten.se/geoservices/ows', {
 	layers: 'hav-bakgrundskartor:hav-grundkarta',
 	format: 'image/png',
 	maxZoom: 14,
