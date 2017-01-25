@@ -21,16 +21,13 @@ var crs = new L.Proj.CRS('EPSG:2193',
 
 var	map = new L.Map('map', {
 	crs: crs,
-	continuousWorld: true,
-	worldCopyJump: false
 });
 
-var tileUrl = 'http://maps.aucklandcouncil.govt.nz/ArcGIS/rest/services/Aerials/MapServer/tile/{z}/{y}/{x}',
-	attrib = 'Auckland City Council &copy; 2012',
+var tileUrl = 'https://maps.aucklandcouncil.govt.nz/ArcGIS/rest/services/Aerials/MapServer/tile/{z}/{y}/{x}',
+	attrib = 'Auckland City Council &copy;',
 	tilelayer = new L.TileLayer(tileUrl, {
 		maxZoom: 12,
 		minZoom: 0,
-		continuousWorld: true,
 		attribution: attrib,
 	});
 
