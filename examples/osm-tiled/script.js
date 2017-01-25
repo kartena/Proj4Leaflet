@@ -5,18 +5,16 @@ var crs = new L.Proj.CRS('EPSG:3006',
 			8192, 4096, 2048, 1024, 512, 256, 128,
 			64, 32, 16, 8, 4, 2, 1, 0.5
 		],
-		origin: [0, 0]
+		origin: [0, 0],
+		bounds: L.bounds([218128.7031, 6126002.9379], [1083427.2970, 7692850.9468])
 	}),
 	map = new L.Map('map', {
 		crs: crs,
-		continuousWorld: true,
-		worldCopyJump: false
 	});
 
 L.tileLayer('http://api.geosition.com/tile/osm-bright-3006/{z}/{x}/{y}.png', {
 	maxZoom: 14,
 	minZoom: 0,
-	continuousWorld: true,
 	attribution: 'Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>, Imagery &copy; 2013 <a href="http://www.kartena.se/">Kartena</a>'
 }).addTo(map);
 

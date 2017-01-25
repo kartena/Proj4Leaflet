@@ -9,8 +9,6 @@ var crs = new L.Proj.CRS('EPSG:3006',
 	}),
 	map = new L.Map('map', {
 		crs: crs,
-		continuousWorld: true,
-		worldCopyJump: false
 	});
 
 L.tileLayer.wms('http://geodatatest.havochvatten.se/geoservices/ows', {
@@ -18,8 +16,7 @@ L.tileLayer.wms('http://geodatatest.havochvatten.se/geoservices/ows', {
 	format: 'image/png',
 	maxZoom: 14,
 	minZoom: 0,
-	continuousWorld: true,
-	attribution: '&copy; <a href="https://www.havochvatten.se/kunskap-om-vara-vatten/kartor-och-geografisk-information/karttjanster.html">Havs- och vattenmyndigheten (Swedish Agency for Marine and Water Management)</a>'
+	attribution: '&copy; OpenStreetMap contributors <a href="https://www.havochvatten.se/kunskap-om-vara-vatten/kartor-och-geografisk-information/karttjanster.html">Havs- och vattenmyndigheten (Swedish Agency for Marine and Water Management)</a>'
 }).addTo(map);
 
-map.setView([55.8, 14.3], 6);
+map.setView([55.8, 14.3], 3);
