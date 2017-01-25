@@ -1,4 +1,4 @@
-# Proj4Leaflet [![NPM version](https://badge.fury.io/js/proj4leaflet.png)](http://badge.fury.io/js/proj4leaflet [![Build Status](https://travis-ci.org/kartena/Proj4Leaflet.svg?branch=master)](https://travis-ci.org/kartena/Proj4Leaflet)
+# Proj4Leaflet [![NPM version](https://badge.fury.io/js/proj4leaflet.png)](http://badge.fury.io/js/proj4leaflet) [![Build Status](https://travis-ci.org/kartena/Proj4Leaflet.svg?branch=master)](https://travis-ci.org/kartena/Proj4Leaflet)
 
 This [Leaflet](http://leafletjs.com) plugin adds support for using projections supported by
 [Proj4js](https://github.com/proj4js/proj4js).
