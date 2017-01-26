@@ -1,0 +1,3 @@
+-XGET
+--url "https://api.github.com/repos/kartena/Proj4Leaflet/contributors?anon=0"
+-o -
