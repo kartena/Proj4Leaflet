@@ -1,9 +1,29 @@
 {
   "name": "Proj4Leaflet",
-  "version": "0.7.2",
+  "version": "1.0.1",
   "homepage": "https://github.com/kartena/Proj4Leaflet",
   "authors": [
-    "Per Liedman <per.liedman@kartena.se> (https://github.com/perliedman/)"
+    "Per Liedman <per.liedman@kartena.se> (https://github.com/perliedman/)",
+    "Peter Thorin (https://github.com/pthorin/)",
+    "Semone Kallin Thander (https://github.com/semone/)",
+    "S. Andrew Sheppard (https://github.com/sheppard)",
+    "Leigh Hunt (https://github.com/leighghunt/)",
+    "Andris Nolendorfs (https://github.com/theashyster)",
+    "Vladimir Agafonkin (https://github.com/mourner)",
+    "Juuso Lehtinen (https://github.com/jleh)",
+    "Mattias Bengtsson (https://github.com/moonlite/)",
+    "Denis Rykov (http://github.com/drnextgis) ",
+    "Jose manuel Vivó Arnal (Chema) (http://github.com/jmvivo) ",
+    "Daniel Garcia (http://github.com/keyjote) ",
+    "Mathieu Leplatre (https://github.com/leplatrem)",
+    "Benny Lichtner (http://github.com/bennlich) ",
+    "Christopher Fredén (https://github.com/icetan/)",
+    "dpzaba (http://github.com/dpzaba) ",
+    "Edward Mac Gillavry (http://github.com/emacgillavry) ",
+    "Emil Goude (http://github.com/Stockholmsnovis) ",
+    "Simon Legner (http://github.com/simon04) ",
+    "Tom Blackmore (http://github.com/tablackmore) ",
+    "Fabien NICOLLET (https://github.com/fnicollet)"
   ],
   "description": "Smooth Proj4js integration with Leaflet",
   "moduleType": [
@@ -28,7 +48,6 @@
     "tests"
   ],
   "dependencies": {
-    "proj4": "^2.0.0",
-    "leaflet": "~0.7.2"
+    "proj4": "^2.3.14"
   }
 }
