@@ -127,9 +127,9 @@ describe('L.Proj.CRS', function() {
 				resolutions: resolutions,
 				origin: [0, 5000]
 			}),
-		    worldSize = 256,
-		    i,
-		    bounds;
+			worldSize = 256,
+			i,
+			bounds;
 
 		for (i = 0; i < resolutions.length; i++) {
 			bounds = crs.getProjectedBounds(i);
@@ -181,4 +181,30 @@ describe('L.Proj.CRS', function() {
 			.to.be.within(111.194, 111.195);
 
 	});
+
+	it('tests that _closestElement works (L.Proj.CRS._closestElement)', function testClosestElement() {
+		var scales = [1, 2, 3],
+			i,
+			expectedValue = 0,
+			scale = 0,
+			crs = new L.Proj.CRS('EPSG:3006', '+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs', {
+			scales: scales
+		});
+
+		for(i = 0; i < scales.length; i ++) {
+			for(; scale < i + 2; scale += 0.01) {
+				expect(
+						crs._closestElement(crs._scales, scale))
+							.to.be(scales[i]);
+			}
+		}
+
+		for(; scale < 10; scale += 0.01) {
+			expect(
+					crs._closestElement(crs._scales, scale))
+						.to.be(3);
+		}
+
+	});
+
 });

@@ -159,7 +159,7 @@
 					low = array[i];
 				}
 			}
-			return low;
+			return low || array[0];
 		}
 	});
 
