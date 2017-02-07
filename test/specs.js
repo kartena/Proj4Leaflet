@@ -165,6 +165,15 @@ describe('L.Proj.CRS', function() {
 		expect(crs.zoom(Infinity)).to.be(Infinity);
 	});
 
+	it('converts scale to zoom and returns -Infinity if the scale passed in is smaller than minimum scale', function () {
+		var crs = new L.Proj.CRS('EPSG:3006', '', {
+			scales: [1, 2, 3]
+		});
+
+		expect(crs.zoom(0.9)).to.be(-Infinity);
+		expect(crs.zoom(-Infinity)).to.be(-Infinity);
+	});
+
 	it('tests that distance works (L.CRS.Earth.Distance)', function testDistance() {
 		var crs = new L.Proj.CRS('EPSG:3006', '+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs', {
 			scales: [1, 2, 3]
@@ -179,31 +188,6 @@ describe('L.Proj.CRS', function() {
 		expect(
 			crs.distance(new L.LatLng(57.777, 11.9), new L.LatLng(57.778, 11.9)))
 			.to.be.within(111.194, 111.195);
-
-	});
-
-	it('tests that _closestElement works (L.Proj.CRS._closestElement)', function testClosestElement() {
-		var scales = [1, 2, 3],
-			i,
-			expectedValue = 0,
-			scale = 0,
-			crs = new L.Proj.CRS('EPSG:3006', '+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs', {
-			scales: scales
-		});
-
-		for(i = 0; i < scales.length; i ++) {
-			for(; scale < i + 2; scale += 0.01) {
-				expect(
-						crs._closestElement(crs._scales, scale))
-							.to.be(scales[i]);
-			}
-		}
-
-		for(; scale < 10; scale += 0.01) {
-			expect(
-					crs._closestElement(crs._scales, scale))
-						.to.be(3);
-		}
 
 	});
 

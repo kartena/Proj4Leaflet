@@ -137,6 +137,9 @@
 			if (scale === downScale) {
 				return downZoom;
 			}
+			if (downScale === undefined) {
+				return -Infinity;
+			}
 			// Interpolate
 			nextZoom = downZoom + 1;
 			nextScale = this._scales[nextZoom];
@@ -159,7 +162,7 @@
 					low = array[i];
 				}
 			}
-			return low || array[0];
+			return low;
 		}
 	});
 
