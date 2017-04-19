@@ -9,7 +9,10 @@
   <script src="http://cdn.rawgit.com/Automattic/expect.js/0.3.1/index.js"></script>
   <script src="http://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.js"></script>
 
-  <script>mocha.setup('bdd')</script>
+  <script>
+    window.initMochaPhantomJS && window.initMochaPhantomJS();
+    mocha.setup('bdd');
+  </script>
   <!-- include source files here... -->
   <script type="text/javascript" src="../lib/leaflet/leaflet-src.js"></script>
   <script type="text/javascript" src="../lib/proj4-compressed.js"></script>
