@@ -14,7 +14,7 @@ use WGS84 as its projection.
 
 Image overlays with bounds set from projected coordinates rather than `LatLng`s are also supported by Proj4Leaflet plugin.
 
-For more details, see this blog post on [tiling and projections](http://blog.kartena.se/local-projections-in-a-world-of-spherical-mercator/).
+For more details, see this blog post on [tiling and projections](http://www.liedman.net/2012/07/02/local-projections-in-a-world-of-spherical-mercator/).
 
 ## Usage
 
