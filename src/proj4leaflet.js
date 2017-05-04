@@ -15,6 +15,8 @@
 		factory(window.L, window.proj4);
 	}
 }(function (L, proj4) {
+	
+	proj4 = proj4.__esModule ? proj4.default : proj4;
 
 	L.Proj = {};
 
