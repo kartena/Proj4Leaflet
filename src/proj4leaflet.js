@@ -7,7 +7,13 @@
 		// Node/CommonJS
 		L = require('leaflet');
 		proj4 = require('proj4');
-		module.exports = factory(L, proj4);
+		// When using Webpack, these modules may become ES6 modules that export
+		// the actual object as `.default`; if the modules have `.default`, use
+		// that instead.  See issue #139 for details.
+		module.exports = factory(
+			(L.default ? L.default : L),
+			(proj4.default ? proj4.default : proj4)
+		);
 	} else {
 		// Browser globals
 		if (typeof window.L === 'undefined' || typeof window.proj4 === 'undefined')
