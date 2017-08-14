@@ -11,7 +11,6 @@
 		// the actual object as `.default`; if the modules have `.default`, use
 		// that instead.  See issue #139 for details.
 		module.exports = factory(
-			(L.default ? L.default : L),
 			(proj4.default ? proj4.default : proj4)
 		);
 	} else {
@@ -21,7 +20,13 @@
 		factory(window.L, window.proj4);
 	}
 }(function (L, proj4) {
-
+	if (proj4.__esModule && proj4.default) {
+		// If proj4 was bundled as an ES6 module, unwrap it to get
+		// to the actual main proj4 object.
+		// See discussion in https://github.com/kartena/Proj4Leaflet/pull/147
+		proj4 = proj4.default;
+	}
+ 
 	L.Proj = {};
 
 	L.Proj._isProj4Obj = function(a) {
