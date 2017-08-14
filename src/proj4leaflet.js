@@ -8,7 +8,6 @@
 		L = require('leaflet');
 		proj4 = require('proj4');
 		module.exports = factory(L, proj4);
-		);
 	} else {
 		// Browser globals
 		if (typeof window.L === 'undefined' || typeof window.proj4 === 'undefined')
