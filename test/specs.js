@@ -138,7 +138,29 @@ describe('L.Proj.CRS', function() {
 			worldSize *= 2;
 		}
 	});
+    
+	it('creates bounds from array', function() {
+		var resolutions = [2, 1, 0.5],
+			crs = new L.Proj.CRS(
+			'EPSG:2400',
+			'+lon_0=15.808277777799999 +lat_0=0.0 +k=1.0 +x_0=1500000.0 ' +
+			'+y_0=0.0 +proj=tmerc +ellps=bessel +units=m ' +
+			'+towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +no_defs', {
+				bounds: [[0, 0], [4000, 5000]],
+				resolutions: resolutions,
+				origin: [0, 5000]
+			}),
+			worldSize = 256,
+			i,
+			bounds;
 
+		for (i = 0; i < resolutions.length; i++) {
+			bounds = crs.getProjectedBounds(i);
+			expect(bounds.max.x).to.be(4000 / resolutions[i]);
+			expect(bounds.max.y).to.be(5000 / resolutions[i]);
+			worldSize *= 2;
+		}
+	});
 	it('converts zoom to scale and vice versa and returns the same values', function () {
 		 var crs = new L.Proj.CRS('EPSG:3006',
 				'+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
