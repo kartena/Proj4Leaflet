@@ -112,6 +112,8 @@
 
 			this.infinite = !L.bounds(this.options.bounds);
 
+			this.minZoom = 0;
+			this.maxZoom = this._scales[i] - 1;
 		},
 
 		scale: function(zoom) {
