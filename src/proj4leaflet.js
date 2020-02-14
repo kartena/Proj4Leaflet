@@ -1,4 +1,4 @@
-(function (factory) {
+(function(factory) {
 	var L, proj4;
 	if (typeof define === 'function' && define.amd) {
 		// AMD
@@ -21,7 +21,7 @@
 		// See discussion in https://github.com/kartena/Proj4Leaflet/pull/147
 		proj4 = proj4.default;
 	}
- 
+
 	L.Proj = {};
 
 	L.Proj._isProj4Obj = function(a) {
@@ -72,9 +72,9 @@
 
 		initialize: function(a, b, c) {
 			var code,
-			    proj,
-			    def,
-			    options;
+				proj,
+				def,
+				options;
 
 			if (L.Proj._isProj4Obj(a)) {
 				proj = a;
@@ -94,9 +94,15 @@
 			this.transformation = this.options.transformation;
 
 			if (this.options.origin) {
-				this.transformation =
-					new L.Transformation(1, -this.options.origin[0],
-						-1, this.options.origin[1]);
+				var first = this.options.origin[0];
+
+				if (this._isArray(first)) {
+					this._createTransformations(this.options.origin);
+				} else {
+					this.transformation =
+						new L.Transformation(1, -this.options.origin[0],
+							-1, this.options.origin[1]);
+				}
 			}
 
 			if (this.options.scales) {
@@ -112,6 +118,38 @@
 
 			this.infinite = !L.bounds(this.options.bounds);
 
+		},
+
+		// override Leaflet function?
+		latLngToPoint: function(latlng, zoom) {
+			var projectedPoint = this.projection.project(latlng);
+			var transformation = this._getTransformationByZoom(zoom);
+			var scale = this.scale(zoom);
+
+			return transformation._transform(projectedPoint, scale);
+		},
+
+		// override Leaflet function?
+		pointToLatLng: function(point, zoom) {
+			var scale = this.scale(zoom);
+			var transformation = this._getTransformationByZoom(zoom);
+			var untransformedPoint = transformation.untransform(point, scale);
+
+			return this.projection.unproject(untransformedPoint);
+		},
+
+		// override Leaflet function?
+		getProjectedBounds: function(zoom) {
+			if (this.infinite) { return null; }
+
+			var transformation = this._getTransformationByZoom(zoom);
+
+			var b = this.projection.bounds,
+				s = this.scale(zoom),
+				min = transformation.transform(b.min, s),
+				max = transformation.transform(b.max, s);
+
+			return new Bounds(min, max);
 		},
 
 		scale: function(zoom) {
@@ -169,6 +207,38 @@
 				}
 			}
 			return low;
+		},
+
+		/* Determines if incoming parameter is an Array */
+		_isArray: Array.isArray || function(arr) {
+			return Object.prototype.toString.call(arr) === '[object Array]';
+		},
+
+		/* creates transformations based on origins */
+		_createTransformations: function(origins) {
+			this._transformations = [];
+
+			for (var i = 0, len = origins.length; i < len; i++) {
+				var origin = origins[i];
+
+				var trans = new L.Transformation(1, -origin[0], -1, origin[1]);
+				this._transformations.push(trans);
+			}
+		},
+
+		/** returns L.Transformation object based on zoom */
+		_getTransformationByZoom: function(zoom) {
+			if (!this._transformations) {
+				return this.transformation;
+			}
+
+			// should we create interpolated transformation if zoom isn't integer?
+			// if so then we should return the result of L.Transformation' _transform function
+			// instead of creating L.Transformation objects
+			var iZoom = Math.floor(zoom);
+			var lastIdx = this._transformations.length - 1;
+
+			return this._transformations[iZoom > lastIdx ? lastIdx : iZoom];
 		}
 	});
 
